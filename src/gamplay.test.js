@@ -28,7 +28,7 @@ describe('Gameboard',()=>{
             boardArray[1][5] = 1
             boardArray[1][6] = 1
     
-            board.placeShip(1,2,5,true)
+            board.placeShip(1,2,5,true,1)
             expect(board.getState(board.getState())).toEqual(boardArray)
         })
     
@@ -40,7 +40,7 @@ describe('Gameboard',()=>{
             boardArray[4][2] = 1
             boardArray[5][2] = 1
     
-            board.placeShip(1,2,5,false)
+            board.placeShip(1,2,5,false,1)
             expect(board.getState()).toEqual(boardArray)
         })
     
@@ -50,7 +50,7 @@ describe('Gameboard',()=>{
         })
     
         test('Place Ship out of bounds',()=>{
-            board.placeShip(10,8,5,false)
+            board.placeShip(10,8,5,false,1)
             expect(board.getState()).toEqual(boardArray)
         })
 
@@ -61,8 +61,8 @@ describe('Gameboard',()=>{
             boardArray[4][2] = 1
             boardArray[5][2] = 1
 
-            board.placeShip(1,2,5,false)
-            board.placeShip(2,1,4,true)
+            board.placeShip(1,2,5,false,1)
+            board.placeShip(2,1,4,true,1)
             expect(board.getState()).toEqual(boardArray)
 
         })
@@ -82,6 +82,6 @@ describe('Gameboard',()=>{
         })
     })
 
-    
+
 
 })

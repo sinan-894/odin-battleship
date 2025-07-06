@@ -27,7 +27,7 @@ export function GameBoard(){
         state.push(new Array(10).fill(0))
     }
 
-    const placeShip = (x,y,length,isHorizontal)=>{
+    const placeShip = (x,y,length,isHorizontal,ship)=>{
         if(
             x>9 || x<0 || y>9 || y<0 ||
             (isHorizontal && y+length>9)||
@@ -37,7 +37,7 @@ export function GameBoard(){
         let counter = 0
         if(isHorizontal){
             while(!state[x][y] && counter<length){
-                state[x][y] = 1
+                state[x][y] = ship
                 y++
                 counter++
             }
@@ -50,7 +50,7 @@ export function GameBoard(){
         else{
             
             while(!state[x][y] && counter<length){
-                state[x][y] = 1
+                state[x][y] = ship
                 x++
                 counter++
             }
