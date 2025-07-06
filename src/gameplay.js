@@ -104,6 +104,6 @@ export function GameBoard(){
 
 
 
-    return {placeShip,getState,receiveAttack}
+    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack}
 
 }

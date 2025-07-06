@@ -138,5 +138,32 @@ describe('Gameboard',()=>{
 
     })
 
+    test('Is Lost :true',()=>{
+        board.placeShipInTheBoard(1,2,5,true)
+        board.receiveAttack(1,2)
+        board.receiveAttack(1,3)
+        board.receiveAttack(1,4)
+        board.receiveAttack(1,5)
+        board.receiveAttack(1,6)
+
+        expect(board.isLost()).toBe(true)
+
+
+        
+    })
+
+    test('Is Lost :False',()=>{
+        board.placeShipInTheBoard(1,2,5,true)
+        board.receiveAttack(1,2)
+        board.receiveAttack(1,3)
+        board.receiveAttack(1,4)
+        board.receiveAttack(1,5)
+
+        expect(board.isLost()).toBeFalsy()
+
+
+        
+    })
+
 
 })
