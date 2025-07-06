@@ -64,7 +64,7 @@ export function GameBoard(){
     const getState =()=>state
 
     const placeShipInTheBoard = (x,y,length,isHorizontal)=>{
-        if(shipArray.includes(length)) return true
+        if(shipArray.length==5) return true
         const ship = Ship(length)
         placeShip(x,y,length,isHorizontal,ship)
         shipArray.push(length)
@@ -106,4 +106,11 @@ export function GameBoard(){
 
     return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack}
 
+}
+
+
+export function Players(){
+    const board = GameBoard()
+
+    return board
 }

@@ -1,0 +1,34 @@
+body{
+
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    width: 400px;
+}
+
+.cell-div{
+    height: 40px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+}
+
+.len-2{
+    background-color: green;
+}
+
+.len-3{
+    background-color: red;
+}
+
+.len-4{
+    background-color: orange;
+}
+
+.len-5{
+    background-color: blue;
+}
