@@ -74,8 +74,8 @@ describe('Gameboard',()=>{
             boardArray[1][5] = 1
             boardArray[1][6] = 1
 
-            board.placeShip(1,2,5,true)
-            board.placeShip(0,2,4,false)
+            board.placeShip(1,2,5,true,1)
+            board.placeShip(0,2,4,false,1)
             console.log(board.getState())
             expect(board.getState()).toEqual(boardArray)
 

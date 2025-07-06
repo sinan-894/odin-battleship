@@ -12,8 +12,11 @@ export function Ship(length){
         return (0 >= length-numberOfHits)?true:false 
     }
 
+<<<<<<< HEAD
     return {length,hit,isSunk}
 
+=======
+>>>>>>> 3bee085 (Create Src directory with source code)
 }
 
 export function GameBoard(){
@@ -62,8 +65,11 @@ export function GameBoard(){
 
     const getState =()=>state
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 3bee085 (Create Src directory with source code)
     return {placeShip,getState}
 
 
