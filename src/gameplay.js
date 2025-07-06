@@ -12,16 +12,14 @@ export function Ship(length){
         return (0 >= length-numberOfHits)?true:false 
     }
 
-<<<<<<< HEAD
     return {length,hit,isSunk}
 
-=======
->>>>>>> 3bee085 (Create Src directory with source code)
 }
 
 export function GameBoard(){
 
     const state = []
+    const shipArray = []
 
     for(let i=0;i<10;i++){
         state.push(new Array(10).fill(0))
@@ -65,16 +63,47 @@ export function GameBoard(){
 
     const getState =()=>state
 
-<<<<<<< HEAD
+    const placeShipInTheBoard = (x,y,length,isHorizontal)=>{
+        if(shipArray.includes(length)) return true
+        const ship = Ship(length)
+        placeShip(x,y,length,isHorizontal,ship)
+        shipArray.push(length)
+    }
 
+    const receiveAttack = (x,y)=>{
+        //returns null if no attack recieved return 'H' if hit and 'X' if miss
+        if(['X','H'].includes(state[x][y])) return null;
 
-=======
->>>>>>> 3bee085 (Create Src directory with source code)
-    return {placeShip,getState}
+        if(state[x][y]){
+            hit(x,y)
+            return 'H'
+        }
+        else{
+            miss(x,y)
+            return 'X'
+        }
+    }
+
+    const hit = (x,y)=>{
+        const ship = state[x][y]
+        ship.hit()
+        if(ship.isSunk()){
+            shipArray.splice(shipArray.indexOf(ship.length),1)
+        }
+        state[x][y] = 'H'
+    }
+
+    const miss = (x,y)=>{
+        state[x][y] = 'X'
+    }
+
+    const isLost = ()=>(shipArray.length == 0)
 
 
     
-    
 
+
+
+    return {placeShip,getState,receiveAttack}
 
 }

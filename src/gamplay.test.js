@@ -1,4 +1,4 @@
-import { GameBoard } from "./gameplay"
+import { GameBoard,Ship } from "./gameplay"
 
 
 describe('Gameboard',()=>{
@@ -82,6 +82,61 @@ describe('Gameboard',()=>{
         })
     })
 
+    describe('Recieve Attack',()=>{
+
+        let boardArray,ship
+        
+        beforeEach(()=>{
+            boardArray = []
+            for(let i=0;i<10;i++){
+                boardArray.push(new Array(10).fill(0))
+            }
+            ship = Ship(5)
+        })
+
+        test('Hit',()=>{
+            boardArray[1][2] = ship
+            boardArray[1][3] = 'H'
+            boardArray[1][4] = ship
+            boardArray[1][5] = ship
+            boardArray[1][6] = ship
+
+            board.placeShip(1,2,5,true,ship)
+            expect(board.receiveAttack(1,3)).toBe('H')
+            expect(board.getState()).toEqual(boardArray)
+
+        })
+
+        test('Miss',()=>{
+            
+            boardArray[1][0] = 'X'
+            boardArray[1][2] = ship
+            boardArray[1][3] = ship
+            boardArray[1][4] = ship
+            boardArray[1][5] = ship
+            boardArray[1][6] = ship
+
+            board.placeShip(1,2,5,true,ship)
+            expect(board.receiveAttack(1,0)).toBe('X')
+            expect(board.getState()).toEqual(boardArray)
+
+        })
+
+        test('Not Recieved',()=>{
+            boardArray[1][2] = ship
+            boardArray[1][3] = 'H'
+            boardArray[1][4] = ship
+            boardArray[1][5] = ship
+            boardArray[1][6] = ship
+
+            board.placeShip(1,2,5,true,ship)
+            expect(board.receiveAttack(1,3)).toBe('H')
+            expect(board.receiveAttack(1,3)).toBeNull()
+            expect(board.getState()).toEqual(boardArray)
+
+        })
+
+    })
 
 
 })
