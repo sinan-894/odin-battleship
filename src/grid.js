@@ -78,19 +78,34 @@ export function GameField(user,opponent){
         else{
             switchTurn(opponent,user)
             computerAttack(user)
+            switchTurn(user,opponent)
         }
     }
 
     const onOppenentCellClick = (cell)=>{
-        if(
-            user.isPlayersTurn() ||
-            !user.board.isLost() ||
-            !opponent.board.isLost()
-        ){
+        if(user.isPlayersTurn()){
             attack(cell,opponent)
+            if(isGameOver()) return
             switchTurn(opponent,user)
             computerAttack(user)
+            if(isGameOver()) return
             switchTurn(user,opponent)
+            
+        }
+    }
+
+    const isGameOver = ()=>{
+
+        if(user.board.isLost()){
+            displayMessage(`Game Over,${opponent.userName} won the match`)
+            return true
+        }
+        else if(opponent.board.isLost()){
+            displayMessage(`Game Over,${user.userName} won the match`)
+            return true
+        }
+        else{
+            return false
         }
     }
 
