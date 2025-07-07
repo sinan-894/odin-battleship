@@ -59,15 +59,18 @@ export function GameBoard(){
             }
 
         }
+
+        return counter
     }
 
     const getState =()=>state
 
     const placeShipInTheBoard = (x,y,length,isHorizontal)=>{
-        if(shipArray.length==5) return true
+        if(shipArray.length==5) return ;
         const ship = Ship(length)
-        placeShip(x,y,length,isHorizontal,ship)
-        shipArray.push(length)
+        let result = placeShip(x,y,length,isHorizontal,ship)
+        if(result) shipArray.push(length)
+        return  result
     }
 
     const receiveAttack = (x,y)=>{
@@ -100,11 +103,38 @@ export function GameBoard(){
     const isLost = ()=>(shipArray.length == 0)
 
 
+    const randomizePlacement = ()=>{
+
+        const lengthArray = [2,2,3,4,5]
+
+        lengthArray.forEach(length=>{
+            console.log(length,'le')
+            let x = genrateRandomNumber(10)
+            let y = genrateRandomNumber(10)
+            let isHorizontal = genrateRandomNumber(2)
+            let result = placeShipInTheBoard(x,y,length,isHorizontal)
+
+            while(!result){
+                console.log('result',result)
+                x = genrateRandomNumber(10)
+                y = genrateRandomNumber(10)
+                isHorizontal = genrateRandomNumber(2)
+                result = placeShipInTheBoard(x,y,length,isHorizontal)
+                
+            }
+            console.log(result,'final')
+
+        })
+
+
+    }
+
+
     
 
 
 
-    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack}
+    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack,randomizePlacement}
 
 }
 
@@ -120,9 +150,8 @@ export function Players(userName){
     return {userName,board,giveTurn,isPlayersTurn}
 }
 
-export function Game(player1,player2){
-    let turn = (Math.floor(Math.random() * 2))?player1:player2
-    const startGame = ()=>{
 
-    }
+
+function genrateRandomNumber(max){
+    return Math.floor(Math.random() * max);
 }

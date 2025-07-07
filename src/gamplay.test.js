@@ -31,6 +31,19 @@ describe('Gameboard',()=>{
             board.placeShip(1,2,5,true,1)
             expect(board.getState(board.getState())).toEqual(boardArray)
         })
+
+        test('Place Ship at  12 horizontal 2',()=>{
+        
+            
+            boardArray[1][2] = 1
+            boardArray[1][3] = 1
+            boardArray[1][4] = 1
+            boardArray[1][5] = 1
+            boardArray[1][6] = 1
+    
+            
+            expect(board.placeShip(1,2,5,true,1)).toBeTruthy()
+        })
     
         test('Place Ship at  12 vertical',()=>{
             
@@ -43,15 +56,36 @@ describe('Gameboard',()=>{
             board.placeShip(1,2,5,false,1)
             expect(board.getState()).toEqual(boardArray)
         })
+
+        test('Place Ship at  12 vertical 2',()=>{
+            
+            boardArray[1][2] = 1
+            boardArray[2][2] = 1
+            boardArray[3][2] = 1
+            boardArray[4][2] = 1
+            boardArray[5][2] = 1
+    
+            
+            expect(board.placeShip(1,2,5,false,1)).toBeTruthy()
+        })
     
         test('Place Ship out of bounds',()=>{
             board.placeShip(1,8,5,true)
             expect(board.getState()).toEqual(boardArray)
         })
+
+        test('Place Ship out of bounds 2',()=>{
+            
+            expect(board.placeShip(1,8,5,true)).toBeFalsy()
+        })
     
         test('Place Ship out of bounds',()=>{
             board.placeShip(10,8,5,false,1)
             expect(board.getState()).toEqual(boardArray)
+        })
+
+        test('Place Ship out of bounds 2',()=>{
+            expect(board.placeShip(10,8,5,false,1)).toBeFalsy()
         })
 
         test('Place Ship In occupied area horizontal',()=>{
@@ -67,6 +101,19 @@ describe('Gameboard',()=>{
 
         })
 
+        test('Place Ship In occupied area horizontal 2',()=>{
+            boardArray[1][2] = 1
+            boardArray[2][2] = 1
+            boardArray[3][2] = 1
+            boardArray[4][2] = 1
+            boardArray[5][2] = 1
+
+            board.placeShip(1,2,5,false,1)
+            
+            expect(board.placeShip(2,1,4,true,1)).toBeFalsy()
+
+        })
+
         test('Place Ship In occupied area vertical',()=>{
             boardArray[1][2] = 1
             boardArray[1][3] = 1
@@ -76,8 +123,20 @@ describe('Gameboard',()=>{
 
             board.placeShip(1,2,5,true,1)
             board.placeShip(0,2,4,false,1)
-            console.log(board.getState())
             expect(board.getState()).toEqual(boardArray)
+
+        })
+
+        test('Place Ship In occupied area vertical 2',()=>{
+            boardArray[1][2] = 1
+            boardArray[1][3] = 1
+            boardArray[1][4] = 1
+            boardArray[1][5] = 1
+            boardArray[1][6] = 1
+
+            board.placeShip(1,2,5,true,1)
+            
+            expect(board.placeShip(0,2,4,false,1)).toBeFalsy()
 
         })
     })
