@@ -37,3 +37,20 @@ export function genarateGameField(user,opponent){
     return container
 
 }
+
+function addShipsToUserGrid(userGrid,user){
+    const userBoard = user.board
+    const rowId = 'abcdefghij'
+    userBoard.getState().forEach((row,x)=>{
+        row.forEach((ship,y)=>{
+            let cell = userGrid.querySelector(`#${rowId[x]}${y+1}`)
+            if(['H','X'].includes(ship)) cell.textContent = val
+
+            if(ship) setBackground(cell,ship.length) 
+        })
+    })
+}  
+
+function setBackground(div,length){
+    div.classList.add(`len-${length}`)
+}
