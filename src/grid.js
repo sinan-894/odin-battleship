@@ -27,27 +27,85 @@ export function generateGridBoard(user,onCellPress){
 
 
 
-export function genarateGameField(user,opponent){
-    const userGrid = generateGridBoard(user.userName,(cell)=>{
-        
-    })
-    addShipsToUserGrid(userGrid,user)
+export function GameField(user,opponent){
 
-    const opponentGrid = generateGridBoard(opponent.userName,(cell)=>{
-        
+    const create = ()=>{
+        const container = document.createElement('div')
+        container.classList.add('main-container');
 
-    })
+        const header = document.createElement('div');
+        header.classList.add('header')
 
-    const container = document.createElement('div');
-    container.classList.add('game-field')
-    container.appendChild(userGrid);
-    container.appendChild(opponentGrid)
+        const messageSpan = document.createElement('span');
+        messageSpan.classList.add('message-span');
 
-    return container
+        header.appendChild(getStartButton())
+        header.appendChild(messageSpan)
+
+        container.appendChild(header)
+        container.appendChild(createField())
+
+        return container
+    }
+
+
+    const createField = ()=>{
+        const userGrid = generateGridBoard(user.userName,(cell)=>{})
+        addShipsToUserGrid(userGrid,user)
+    
+        const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
+    
+        const container = document.createElement('div');
+        container.classList.add('game-field')
+        container.appendChild(userGrid);
+        container.appendChild(opponentGrid);
+    
+        return container
+    }
+
+    const getStartButton = ()=>{
+        const button = document.createElement('button')
+        button.classList.add('start-button');
+        button.textContent = 'start'
+        button.addEventListener('click',onStart)
+        return button
+    }
+
+    const onStart = ()=>{
+        if(genrateRandomNumber(2)){
+            switchTurn(user,opponent)
+        }
+        else{
+            switchTurn(opponent,user)
+            computerAttack(user)
+        }
+    }
+
+    const onOppenentCellClick = (cell)=>{
+        if(
+            user.isPlayersTurn() ||
+            !user.board.isLost() ||
+            !opponent.board.isLost()
+        ){
+            attack(cell,opponent)
+            switchTurn(opponent,user)
+            computerAttack(user)
+            switchTurn(user,opponent)
+        }
+    }
+
+    return {create}
+    
 
 }
 
-export function computerAttack(user){
+function displayMessage(message){
+    const messageSpan = document.querySelector('.message-span')
+    messageSpan.innerHTML = ''
+    messageSpan.textContent = message
+}
+
+function computerAttack(user){
     let x = genrateRandomNumber(10)
     let y = genrateRandomNumber(10)
     const userBoard = user.board
@@ -61,9 +119,12 @@ export function computerAttack(user){
         y = genrateRandomNumber(10)
         result = userBoard.receiveAttack(x,y)
     }
-    console.log(x,y,result,'dsdsd');
     const cell = document.querySelector(`#${user.userName} #${getIdfromCordinates(x,y)}`)
     cell.textContent = result
+
+    if(result=='H') displayMessage('Its A HIT!!')
+    else displayMessage('Miss!!')
+
     return result
 }
 
@@ -83,6 +144,9 @@ function attack(cell,player){
     else{
         console.log('already guessed')
     }
+
+    if(result=='H') displayMessage('Its A HIT!!')
+    else displayMessage('Miss!!')
 
 
 
@@ -119,10 +183,8 @@ function setBackground(div,length){
     div.classList.add(`len-${length}`)
 }
 
-function computerDriver(){
-
-}
-
-function switchTurn(){
-
+function switchTurn(nextPlayer,currentPlayer){
+    nextPlayer.giveTurn(true)
+    currentPlayer.giveTurn(false)
+    displayMessage(`${nextPlayer.userName}'s Turn`)
 }

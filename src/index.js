@@ -1,13 +1,10 @@
-import { genarateGameField,computerAttack } from "./grid.js";
+import { GameField} from "./grid.js";
 import { computer,user } from "./player-setting.js";
 
 const opp = computer
 
-const startButton = document.createElement('button');
-startButton.textContent ='start'
+const field = GameField(user,opp)
 
-document.body.appendChild(startButton)
-
-document.body.appendChild(genarateGameField(user,opp))
+document.body.appendChild(field.create())
 
 
