@@ -111,6 +111,18 @@ export function GameBoard(){
 
 export function Players(userName){
     const board = GameBoard()
+    let playersTurn = false
+    const giveTurn =(turn=true)=>{
+        playersTurn = turn
+    }
+    const isPlayersTurn =()=>playersTurn
 
-    return {userName,board}
+    return {userName,board,giveTurn,isPlayersTurn}
+}
+
+export function Game(player1,player2){
+    let turn = (Math.floor(Math.random() * 2))?player1:player2
+    const startGame = ()=>{
+
+    }
 }

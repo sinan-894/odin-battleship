@@ -1,5 +1,13 @@
 
- export function generateGridBoard(user,onCellPress){
+
+ 
+function genrateRandomNumber(max){
+    return Math.floor(Math.random() * max);
+}
+
+
+ 
+export function generateGridBoard(user,onCellPress){
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('grid-container')
     gridContainer.id = user
@@ -21,12 +29,19 @@
 
 export function genarateGameField(user,opponent){
     const userGrid = generateGridBoard(user.userName,(cell)=>{
+        if(!user.isPlayersTurn()) return 
         console.log(cell.id)
+        opponent.giveTurn()
+        user.giveTurn(false)
     })
     addShipsToUserGrid(userGrid,user)
 
     const opponentGrid = generateGridBoard(opponent.userName,(cell)=>{
+        if(!opponent.isPlayersTurn()) return 
         attack(cell,opponent)
+        opponent.giveTurn(false)
+        user.giveTurn()
+
     })
 
     const container = document.createElement('div');
@@ -89,4 +104,12 @@ function getIdfromCordinates(x,y){
 
 function setBackground(div,length){
     div.classList.add(`len-${length}`)
+}
+
+function computerDriver(){
+
+}
+
+function switchTurn(){
+
 }
