@@ -82,17 +82,25 @@ export function GameField(user,opponent){
         }
     }
 
-    const onOppenentCellClick = (cell)=>{
-        if(user.isPlayersTurn()){
+    const onOppenentCellClick = async (cell)=>{
+        if(user.isPlayersTurn() && !isGameOver()){
             attack(cell,opponent)
+            //need to freeze the board until promise is resolved
+            user.giveTurn(false)
             if(isGameOver()) return
+            await delay(1000)
             switchTurn(opponent,user)
+            await delay(1000)
             computerAttack(user)
-            if(isGameOver()) return
+            await delay(1000)
             switchTurn(user,opponent)
+            if(isGameOver()) return
+            
             
         }
     }
+
+
 
     const isGameOver = ()=>{
 
@@ -119,6 +127,14 @@ function displayMessage(message){
     messageSpan.innerHTML = ''
     messageSpan.textContent = message
 }
+
+
+function delay(ms){
+    return new Promise((resolve,reject)=>{
+        setTimeout(resolve,ms)
+    })
+}
+
 
 function computerAttack(user){
     let x = genrateRandomNumber(10)
