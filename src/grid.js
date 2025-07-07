@@ -29,18 +29,12 @@ export function generateGridBoard(user,onCellPress){
 
 export function genarateGameField(user,opponent){
     const userGrid = generateGridBoard(user.userName,(cell)=>{
-        if(!user.isPlayersTurn()) return 
-        console.log(cell.id)
-        opponent.giveTurn()
-        user.giveTurn(false)
+        
     })
     addShipsToUserGrid(userGrid,user)
 
     const opponentGrid = generateGridBoard(opponent.userName,(cell)=>{
-        if(!opponent.isPlayersTurn()) return 
-        attack(cell,opponent)
-        opponent.giveTurn(false)
-        user.giveTurn()
+        
 
     })
 
@@ -51,6 +45,26 @@ export function genarateGameField(user,opponent){
 
     return container
 
+}
+
+export function computerAttack(user){
+    let x = genrateRandomNumber(10)
+    let y = genrateRandomNumber(10)
+    const userBoard = user.board
+    if(userBoard.isLost()){ 
+        console.log('game over')
+        return ;
+    }
+    let result = userBoard.receiveAttack(x,y)
+    while(!result){
+        x = genrateRandomNumber(10)
+        y = genrateRandomNumber(10)
+        result = userBoard.receiveAttack(x,y)
+    }
+    console.log(x,y,result,'dsdsd');
+    const cell = document.querySelector(`#${user.userName} #${getIdfromCordinates(x,y)}`)
+    cell.textContent = result
+    return result
 }
 
 function attack(cell,player){
@@ -88,9 +102,8 @@ function addShipsToUserGrid(userGrid,user){
 } 
 
 function getCordinatesFromId(id){
-    let [x,y]= id.split("")
-    x = x.charCodeAt(0)-97
-    y = Number(y)-1
+    let x = id[0].charCodeAt(0)-97
+    let y = Number(id.substr(1))-1
 
     return [x,y]
 }
