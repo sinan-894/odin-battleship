@@ -109,8 +109,8 @@ export function GameBoard(){
 }
 
 
-export function Players(){
+export function Players(userName){
     const board = GameBoard()
 
-    return board
+    return {userName,board}
 }

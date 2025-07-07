@@ -1,7 +1,7 @@
 import { genarateGameField } from "./grid.js";
+import { computer,user } from "./player-setting.js";
 
-const user = {userName :'user'}
-const opp =  {userName : 'opp'}
+const opp =  computer
 
 document.body.appendChild(genarateGameField(user,opp))
 
