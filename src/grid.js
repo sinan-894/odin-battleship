@@ -26,7 +26,7 @@ export function genarateGameField(user,opponent){
     addShipsToUserGrid(userGrid,user)
 
     const opponentGrid = generateGridBoard(opponent.userName,(cell)=>{
-        console.log(cell.id)
+        attack(cell,opponent)
     })
 
     const container = document.createElement('div');
@@ -38,18 +38,54 @@ export function genarateGameField(user,opponent){
 
 }
 
+function attack(cell,player){
+    const playerBoard = player.board
+    if(playerBoard.isLost()){ 
+        console.log('game over')
+        return ;
+    }
+    let [x,y] =getCordinatesFromId(cell.id)
+
+    const result = playerBoard.receiveAttack(x,y)
+
+    if(result){
+        cell.textContent = result
+    }
+    else{
+        console.log('already guessed')
+    }
+
+
+
+}
+
 function addShipsToUserGrid(userGrid,user){
     const userBoard = user.board
-    const rowId = 'abcdefghij'
+    
     userBoard.getState().forEach((row,x)=>{
         row.forEach((ship,y)=>{
-            let cell = userGrid.querySelector(`#${rowId[x]}${y+1}`)
+            let cell = userGrid.querySelector(`#${getIdfromCordinates(x,y)}`)
             if(['H','X'].includes(ship)) cell.textContent = val
 
             if(ship) setBackground(cell,ship.length) 
         })
     })
-}  
+} 
+
+function getCordinatesFromId(id){
+    let [x,y]= id.split("")
+    x = x.charCodeAt(0)-97
+    y = Number(y)-1
+
+    return [x,y]
+}
+
+function getIdfromCordinates(x,y){
+    const rowId = 'abcdefghij'
+
+    return `${rowId[x]}${y+1}`
+
+}
 
 function setBackground(div,length){
     div.classList.add(`len-${length}`)

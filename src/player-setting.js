@@ -12,7 +12,7 @@ userBoard.placeShipInTheBoard(7,4,4,true)
 userBoard.placeShipInTheBoard(4,3,5,false)
 
 export const computer = Players('computer')
-const computerBoard = user.board
+const computerBoard = computer.board
 
 computerBoard.placeShipInTheBoard(0,0,2,false)
 computerBoard.placeShipInTheBoard(0,3,2,true)
