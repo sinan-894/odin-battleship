@@ -125,8 +125,14 @@ export function GameBoard(){
             console.log(result,'final')
 
         })
+    }
 
+    const clear = ()=>{
+        for(let i=0;i<10;i++){
+            state[i]=(new Array(10).fill(0))
+        }
 
+        shipArray.splice(0,shipArray.length)
     }
 
 
@@ -134,7 +140,7 @@ export function GameBoard(){
 
 
 
-    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack,randomizePlacement}
+    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack,randomizePlacement,clear}
 
 }
 

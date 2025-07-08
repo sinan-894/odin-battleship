@@ -224,5 +224,33 @@ describe('Gameboard',()=>{
         
     })
 
+    describe('Clear Board',()=>{
+
+        let boardArray
+        
+        beforeEach(()=>{
+            boardArray = []
+            for(let i=0;i<10;i++){
+                boardArray.push(new Array(10).fill(0))
+            }
+        })
+
+        test('Board',()=>{
+            board.randomizePlacement()
+            board.clear()
+
+            expect(board.getState()).toEqual(boardArray)
+        })
+
+        test('shipArray',()=>{
+            board.randomizePlacement()
+            board.clear()
+
+            expect(board.isLost()).toBeTruthy()
+        })
+
+
+    })
+
 
 })

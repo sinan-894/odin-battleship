@@ -75,7 +75,11 @@ export function GameField(user,opponent){
     }
 
     const onRandomPlacement = ()=>{
+        user.board.clear()
         user.board.randomizePlacement()
+        removeBackgrounds()
+        const grid = document.querySelector(`#${user.userName}`)
+        addShipsToUserGrid(grid,user)
     }
 
     const getStartButton = ()=>{
@@ -209,7 +213,20 @@ function addShipsToUserGrid(userGrid,user){
             if(ship) setBackground(cell,ship.length) 
         })
     })
-} 
+}
+
+function removeBackgrounds(){
+    const lengthArray = [2,3,4,5]
+
+    lengthArray.forEach(length=>{
+        let cells = Array.from(
+            document.querySelectorAll(`.len-${length}`)
+        )
+        cells.forEach(cell=>{
+            cell.classList.remove(`len-${length}`)
+        }) 
+    })
+}
 
 function getCordinatesFromId(id){
     let x = id[0].charCodeAt(0)-97
