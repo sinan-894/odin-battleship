@@ -179,6 +179,7 @@ function TwoPlayerField(user,opponent){
         
         if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
             if (!isGameOver()){
+                user.giveTurn(false)
                 delay(1000).then(()=>switchTurn(opponent,user))
             }
         }
@@ -187,6 +188,7 @@ function TwoPlayerField(user,opponent){
     const onUserCellClick =  (cell)=>{
         if(opponent.isPlayersTurn() && !isGameOver() && attack(cell,user)){
             if (!isGameOver()){
+                opponent.giveTurn(false)
                 delay(1000).then(()=>switchTurn(user,opponent))
             }
         }
