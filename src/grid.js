@@ -29,6 +29,8 @@ export function generateGridBoard(user,onCellPress){
 
 export function GameField(user,opponent){
 
+    let Start = false
+
     const create = ()=>{
         const container = document.createElement('div')
         container.classList.add('main-container');
@@ -75,11 +77,14 @@ export function GameField(user,opponent){
     }
 
     const onRandomPlacement = ()=>{
-        user.board.clear()
-        user.board.randomizePlacement()
-        removeBackgrounds()
-        const grid = document.querySelector(`#${user.userName}`)
-        addShipsToUserGrid(grid,user)
+        if(!Start){
+            user.board.clear()
+            user.board.randomizePlacement()
+            removeBackgrounds()
+            const grid = document.querySelector(`#${user.userName}`)
+            addShipsToUserGrid(grid,user)
+        }
+        
     }
 
     const getStartButton = ()=>{
@@ -91,6 +96,7 @@ export function GameField(user,opponent){
     }
 
     const onStart = ()=>{
+        Start = true
         if(genrateRandomNumber(2)){
             switchTurn(user,opponent)
         }
