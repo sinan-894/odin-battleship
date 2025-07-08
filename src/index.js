@@ -1,10 +1,9 @@
-import { GameField} from "./grid.js";
-import { computer,user } from "./player-setting.js";
+// import { computer,user } from "./player-setting.js";
 import { selectModeInterface } from "./modes.js";
 
-const opp = computer
+// const opp = computer
 
-const field = GameField(user,opp)
+// const field = GameField(user,opp)
 
 document.body.appendChild(selectModeInterface())
 
