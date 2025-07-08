@@ -43,7 +43,11 @@ function onComputer(){
 function onTwoPlayer(){
     const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
 
-    const field = GameField(playerOne,playerTwo)
+    console.log(playerOne,playerTwo)
+    const field = GameField(playerOne,playerTwo,false)
+    document.body.innerHTML = ""
+    document.body.appendChild(field.create())
+
 }
 
 function testPlayers(player1,player2){

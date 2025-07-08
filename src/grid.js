@@ -144,15 +144,67 @@ function ComputerField(user,opponent){
 }
 
 function TwoPlayerField(user,opponent){
-    
+    let Start = false
+    const {isGameOver} = GameOver(user,opponent)
+
+    const createPlayerGridContainer = (onCellClick)=>{
+
+        return ()=>{
+            const container = document.createElement('div')
+            const userGrid = generateGridBoard(user.userName,onCellClick)
+            container.appendChild(userGrid)
+            return container
+        }
+
+    }
+    const onStart = ()=>{
+        if(!Start){
+            Start = true
+            if(genrateRandomNumber(2)){
+                switchTurn(user,opponent)
+            }
+            else{
+                switchTurn(opponent,user)
+            }
+        }
+        else{
+            displayMessage('')
+            Start = false
+        }
+        
+    }
+
+
+    const onOppenentCellClick =  (cell)=>{
+        
+        if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
+            if (!isGameOver()){
+                delay(1000).then(()=>switchTurn(opponent,user))
+            }
+        }
+    }
+
+    const onUserCellClick =  (cell)=>{
+        if(opponent.isPlayersTurn() && !isGameOver() && attack(cell,user)){
+            if (!isGameOver()){
+                delay(1000).then(()=>switchTurn(user,opponent))
+            }
+        }
+    }
+
+    const createUserGridContainer = createPlayerGridContainer(onUserCellClick)
+    const createOpponentGridContainer = createPlayerGridContainer(onOppenentCellClick)
+
+    return {createOpponentGridContainer,createUserGridContainer,onStart}
 }
 
+export function GameField(user,opponent,isComputer=true){
 
-export function GameField(user,opponent){
-
+    let field = ComputerField()
+    
     const {
         createUserGridContainer,createOpponentGridContainer,onStart
-    } = ComputerField(user,opponent)
+    } = (isComputer)?ComputerField(user,opponent):TwoPlayerField(user,opponent)
     
     const create = ()=>{
         const container = document.createElement('div')
@@ -196,7 +248,6 @@ export function GameField(user,opponent){
 
 }
 
-
 function clearGrid(grid){
     for(let i=0;i<10;i++){
         for(let j=0;j<10;j++){
@@ -205,7 +256,6 @@ function clearGrid(grid){
         }
     }
 }
-
 
 function displayMessage(message){
     const messageSpan = document.querySelector('.message-span')
