@@ -102,8 +102,7 @@ export function GameField(user,opponent){
     }
 
     const onOppenentCellClick = async (cell)=>{
-        if(user.isPlayersTurn() && !isGameOver()){
-            attack(cell,opponent)
+        if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
             //need to freeze the board until promise is resolved
             user.giveTurn(false)
             if(isGameOver()) return
@@ -180,10 +179,6 @@ function computerAttack(user){
 
 function attack(cell,player){
     const playerBoard = player.board
-    if(playerBoard.isLost()){ 
-        console.log('game over')
-        return ;
-    }
     let [x,y] =getCordinatesFromId(cell.id)
 
     const result = playerBoard.receiveAttack(x,y)
@@ -193,10 +188,13 @@ function attack(cell,player){
     }
     else{
         console.log('already guessed')
+        return 
     }
 
     if(result=='H') displayMessage('Its A HIT!!')
     else displayMessage('Miss!!')
+
+    return result
 
 
 
