@@ -1,4 +1,4 @@
-import { GameField} from "./grid.js";
+import { GameField,ComputerField,TwoPlayerField} from "./grid.js";
 import { Players } from "./gameplay.js";
 
 export function selectModeInterface(){
@@ -34,7 +34,8 @@ function onComputer(){
     computerBoard.placeShipInTheBoard(7,4,4,true)
     computerBoard.placeShipInTheBoard(4,3,5,false)
 
-    const field = GameField(user,computer)
+    const field = ComputerField(user,computer)
+    console.log(field,'dsd')
 
     document.body.innerHTML = ""
     document.body.appendChild(field.create())
@@ -44,7 +45,7 @@ function onTwoPlayer(){
     const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
 
     console.log(playerOne,playerTwo)
-    const field = GameField(playerOne,playerTwo,false)
+    const field = TwoPlayerField(playerOne,playerTwo)
     document.body.innerHTML = ""
     document.body.appendChild(field.create())
 

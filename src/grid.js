@@ -44,7 +44,7 @@ function GameOver(user,opponent){
     return {isGameOver}
 }
 
-function ComputerField(user,opponent){
+export function ComputerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
 
@@ -140,10 +140,15 @@ function ComputerField(user,opponent){
         }
     }
 
-    return {createUserGridContainer,createOpponentGridContainer,onStart}
+    const container = GameField(
+        createUserGridContainer(),createOpponentGridContainer(),onStart
+    )
+
+    
+    return container
 }
 
-function TwoPlayerField(user,opponent){
+export function TwoPlayerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
 
@@ -197,16 +202,14 @@ function TwoPlayerField(user,opponent){
     const createUserGridContainer = createPlayerGridContainer(onUserCellClick)
     const createOpponentGridContainer = createPlayerGridContainer(onOppenentCellClick)
 
-    return {createOpponentGridContainer,createUserGridContainer,onStart}
+    const container = GameField(
+        createUserGridContainer(),createOpponentGridContainer(),onStart
+    )
+
+    return container
 }
 
-export function GameField(user,opponent,isComputer=true){
-
-    let field = ComputerField()
-    
-    const {
-        createUserGridContainer,createOpponentGridContainer,onStart
-    } = (isComputer)?ComputerField(user,opponent):TwoPlayerField(user,opponent)
+function GameField(userGridContainer,opponentGridContainer,onStart){
     
     const create = ()=>{
         const container = document.createElement('div')
@@ -231,8 +234,8 @@ export function GameField(user,opponent,isComputer=true){
         
         const container = document.createElement('div');
         container.classList.add('game-field')
-        container.appendChild(createUserGridContainer());
-        container.appendChild(createOpponentGridContainer());
+        container.appendChild(userGridContainer);
+        container.appendChild(opponentGridContainer);
     
         return container
     }
