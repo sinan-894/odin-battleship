@@ -31,6 +31,38 @@ export function GameField(user,opponent){
 
     let Start = false
 
+    const isGameOver = ()=>{
+
+        if(user.board.isLost()){
+            displayMessage(`Game Over,${opponent.userName} won the match`)
+            return true
+        }
+        else if(opponent.board.isLost()){
+            displayMessage(`Game Over,${user.userName} won the match`)
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
+    const getStartButton = ()=>{
+        const button = document.createElement('button')
+        button.classList.add('start-button');
+        button.textContent = 'start'
+        button.addEventListener('click',onStart)
+        return button
+    }
+
+    const clearGrid = (grid)=>{
+        for(let i=0;i<10;i++){
+            for(let j=0;j<10;j++){
+                let cell = grid.querySelector(`#${getIdfromCordinates(i,j)}`)
+                cell.textContent = ""
+            }
+        }
+    }
+
     const create = ()=>{
         const container = document.createElement('div')
         container.classList.add('main-container');
@@ -49,7 +81,6 @@ export function GameField(user,opponent){
 
         return container
     }
-
 
     const createField = ()=>{
 
@@ -85,14 +116,6 @@ export function GameField(user,opponent){
             addShipsToUserGrid(grid,user)
         }
         
-    }
-
-    const getStartButton = ()=>{
-        const button = document.createElement('button')
-        button.classList.add('start-button');
-        button.textContent = 'start'
-        button.addEventListener('click',onStart)
-        return button
     }
 
     const onStart = ()=>{
@@ -134,15 +157,6 @@ export function GameField(user,opponent){
 
     }
 
-    const clearGrid = (grid)=>{
-        for(let i=0;i<10;i++){
-            for(let j=0;j<10;j++){
-                let cell = grid.querySelector(`#${getIdfromCordinates(i,j)}`)
-                cell.textContent = ""
-            }
-        }
-    }
-
     const onOppenentCellClick = async (cell)=>{
         if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
             //need to freeze the board until promise is resolved
@@ -162,20 +176,7 @@ export function GameField(user,opponent){
 
 
 
-    const isGameOver = ()=>{
-
-        if(user.board.isLost()){
-            displayMessage(`Game Over,${opponent.userName} won the match`)
-            return true
-        }
-        else if(opponent.board.isLost()){
-            displayMessage(`Game Over,${user.userName} won the match`)
-            return true
-        }
-        else{
-            return false
-        }
-    }
+    
 
     return {create}
     

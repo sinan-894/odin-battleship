@@ -41,5 +41,29 @@ function onComputer(){
 }
 
 function onTwoPlayer(){
+    const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
+
+    const field = GameField(playerOne,playerTwo)
+}
+
+function testPlayers(player1,player2){
+    const playerOne = Players(player1)
+    const playerOneBoard = playerOne.board
+    playerOneBoard.placeShipInTheBoard(0,0,2,false)
+    playerOneBoard.placeShipInTheBoard(0,3,2,true)
+    playerOneBoard.placeShipInTheBoard(2,1,3,true)
+    playerOneBoard.placeShipInTheBoard(7,4,4,true)
+    playerOneBoard.placeShipInTheBoard(4,3,5,false)
+
+    const playerTwo  = Players(player2)
+    const playerTwoBoard = playerTwo.board
+    playerTwoBoard.placeShipInTheBoard(0,0,2,false)
+    playerTwoBoard.placeShipInTheBoard(0,3,2,true)
+    playerTwoBoard.placeShipInTheBoard(2,1,3,true)
+    playerTwoBoard.placeShipInTheBoard(7,4,4,true)
+    playerTwoBoard.placeShipInTheBoard(4,3,5,false)
+
+    return [playerOne,playerTwo]
+
 
 }
