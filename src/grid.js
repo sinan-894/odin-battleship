@@ -175,6 +175,7 @@ export function TwoPlayerField(user,opponent){
         else{
             displayMessage('')
             Start = false
+            placeShipSequence(document.body)
         }
         
     }
@@ -212,6 +213,7 @@ export function TwoPlayerField(user,opponent){
             parent.appendChild(dialog)
             dialog.showModal()
         })
+        parent.innerHTML = ''
         const dialog = userPlace.createCoverForPlayer()
         parent.appendChild(userPlace.createInterface())
         parent.appendChild(dialog)
