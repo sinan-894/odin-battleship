@@ -96,14 +96,50 @@ export function GameField(user,opponent){
     }
 
     const onStart = ()=>{
-        Start = true
-        if(genrateRandomNumber(2)){
-            switchTurn(user,opponent)
+        if(!Start){
+            Start = true
+            if(genrateRandomNumber(2)){
+                switchTurn(user,opponent)
+            }
+            else{
+                switchTurn(opponent,user)
+                delay(750).then(()=>{
+                    computerAttack(user)
+                    console.log('after 5 sec')
+                })
+                delay(1500).then(()=>switchTurn(user,opponent))
+                
+            }
         }
         else{
-            switchTurn(opponent,user)
-            computerAttack(user)
-            switchTurn(user,opponent)
+            restartGame()
+            displayMessage('')
+            Start = false
+        }
+        
+    }
+
+    const restartGame = ()=>{
+        const userGrid  = document.querySelector(`#${user.userName}`)
+        const opponentGrid  = document.querySelector(`#${opponent.userName}`)
+        clearGrid(userGrid)
+        clearGrid(opponentGrid)
+        user.board.clear()
+        // opponent.board.clear()
+        removeBackgrounds()
+        user.board.randomizePlacement()
+        addShipsToUserGrid(userGrid,user)
+        user.giveTurn(false)
+        opponent.giveTurn(false)
+
+    }
+
+    const clearGrid = (grid)=>{
+        for(let i=0;i<10;i++){
+            for(let j=0;j<10;j++){
+                let cell = grid.querySelector(`#${getIdfromCordinates(i,j)}`)
+                cell.textContent = ""
+            }
         }
     }
 
@@ -112,12 +148,12 @@ export function GameField(user,opponent){
             //need to freeze the board until promise is resolved
             user.giveTurn(false)
             if(isGameOver()) return
-            await delay(1000)
-            switchTurn(opponent,user)
-            await delay(1000)
-            computerAttack(user)
-            await delay(1000)
-            switchTurn(user,opponent)
+            await delay(500)//wait attack result
+            if(Start) switchTurn(opponent,user)
+            await delay(500)//wait for opp switch turn result
+            if(Start) computerAttack(user)
+            await delay(500)//wait for computer attack
+            if(Start) switchTurn(user,opponent)
             if(isGameOver()) return
             
             
