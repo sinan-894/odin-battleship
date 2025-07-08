@@ -243,13 +243,11 @@ function PlaceShipGrid(user,onSave){
         gridContainer.appendChild(generateGridBoard(user.userName,(cell)=>{}))
         gridContainer.appendChild(getRandomPlaceButtonForUser())
 
-        const saveButton = document.createElement('button')
-        saveButton.textContent = 'save'
-        saveButton.addEventListener('click',onSave)
-        saveButton.classList.add('save-button')
+        const saveSpan = document.createElement('span')
+        saveSpan.classList.add('save-button-container') 
 
         container.appendChild(gridContainer)
-        container.appendChild(saveButton)
+        container.appendChild(saveSpan)
 
         return container
 
@@ -271,6 +269,16 @@ function PlaceShipGrid(user,onSave){
         removeBackgrounds()
         const grid = document.querySelector(`#${user.userName}`)
         addShipsToUserGrid(grid,user)
+        const saveSpan = document.querySelector('.save-button-container')
+        console.log(saveSpan.innerHTML)
+        if(saveSpan.innerHTML == ''){
+            const saveButton = document.createElement('button')
+            saveButton.textContent = 'save'
+            saveButton.addEventListener('click',onSave)
+            saveButton.classList.add('save-button')
+            saveSpan.appendChild(saveButton)
+        }
+        
 
         
     }
