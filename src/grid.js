@@ -50,17 +50,32 @@ export function GameField(user,opponent){
 
 
     const createField = ()=>{
+
+        const userGridContainer = document.createElement('div')
         const userGrid = generateGridBoard(user.userName,(cell)=>{})
         addShipsToUserGrid(userGrid,user)
-    
+        const randomlyPlaceButton = document.createElement('button')
+        randomlyPlaceButton.textContent = 'random'
+        randomlyPlaceButton.addEventListener('click',onRandomPlacement)
+        randomlyPlaceButton.classList.add('random-place');
+
+        userGridContainer.appendChild(userGrid)
+        userGridContainer.appendChild(randomlyPlaceButton)
+        
+        const opponentGridContainer = document.createElement('div')
         const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
+        opponentGridContainer.appendChild(opponentGrid)
     
         const container = document.createElement('div');
         container.classList.add('game-field')
-        container.appendChild(userGrid);
-        container.appendChild(opponentGrid);
+        container.appendChild(userGridContainer);
+        container.appendChild(opponentGridContainer);
     
         return container
+    }
+
+    const onRandomPlacement = ()=>{
+        user.board.randomizePlacement()
     }
 
     const getStartButton = ()=>{
