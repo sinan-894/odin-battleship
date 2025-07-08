@@ -25,12 +25,7 @@ export function generateGridBoard(user,onCellPress){
     return gridContainer
 }
 
-
-
-export function GameField(user,opponent){
-
-    let Start = false
-
+function GameOver(user,opponent){
     const isGameOver = ()=>{
 
         if(user.board.isLost()){
@@ -46,65 +41,36 @@ export function GameField(user,opponent){
         }
     }
 
-    const getStartButton = ()=>{
-        const button = document.createElement('button')
-        button.classList.add('start-button');
-        button.textContent = 'start'
-        button.addEventListener('click',onStart)
-        return button
-    }
+    return {isGameOver}
+}
 
-    const clearGrid = (grid)=>{
-        for(let i=0;i<10;i++){
-            for(let j=0;j<10;j++){
-                let cell = grid.querySelector(`#${getIdfromCordinates(i,j)}`)
-                cell.textContent = ""
-            }
-        }
-    }
+function ComputerField(user,opponent){
+    let Start = false
+    const {isGameOver} = GameOver(user,opponent)
 
-    const create = ()=>{
+    const createUserGridContainer = ()=>{
         const container = document.createElement('div')
-        container.classList.add('main-container');
-
-        const header = document.createElement('div');
-        header.classList.add('header')
-
-        const messageSpan = document.createElement('span');
-        messageSpan.classList.add('message-span');
-
-        header.appendChild(getStartButton())
-        header.appendChild(messageSpan)
-
-        container.appendChild(header)
-        container.appendChild(createField())
-
-        return container
-    }
-
-    const createField = ()=>{
-
-        const userGridContainer = document.createElement('div')
         const userGrid = generateGridBoard(user.userName,(cell)=>{})
         addShipsToUserGrid(userGrid,user)
+        container.appendChild(userGrid)
+        container.appendChild(getRandomPlaceButtonForUser())
+        return container
+
+    }
+
+    const createOpponentGridContainer = ()=>{
+        const opponentGridContainer = document.createElement('div')
+        const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
+        opponentGridContainer.appendChild(opponentGrid)
+        return opponentGridContainer
+    }
+
+    const getRandomPlaceButtonForUser = ()=>{
         const randomlyPlaceButton = document.createElement('button')
         randomlyPlaceButton.textContent = 'random'
         randomlyPlaceButton.addEventListener('click',onRandomPlacement)
         randomlyPlaceButton.classList.add('random-place');
-
-        userGridContainer.appendChild(userGrid)
-        userGridContainer.appendChild(randomlyPlaceButton)
-        
-        const opponentGridContainer = document.createElement('div')
-        const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
-        opponentGridContainer.appendChild(opponentGrid)
-    
-        const container = document.createElement('div');
-        container.classList.add('game-field')
-        container.appendChild(userGridContainer);
-        container.appendChild(opponentGridContainer);
-    
-        return container
+        return randomlyPlaceButton
     }
 
     const onRandomPlacement = ()=>{
@@ -174,14 +140,72 @@ export function GameField(user,opponent){
         }
     }
 
+    return {createUserGridContainer,createOpponentGridContainer,onStart}
+}
 
-
+function TwoPlayerField(user,opponent){
     
+}
+
+
+export function GameField(user,opponent){
+
+    const {
+        createUserGridContainer,createOpponentGridContainer,onStart
+    } = ComputerField(user,opponent)
+    
+    const create = ()=>{
+        const container = document.createElement('div')
+        container.classList.add('main-container');
+
+        const header = document.createElement('div');
+        header.classList.add('header')
+
+        const messageSpan = document.createElement('span');
+        messageSpan.classList.add('message-span');
+
+        header.appendChild(getStartButton())
+        header.appendChild(messageSpan)
+
+        container.appendChild(header)
+        container.appendChild(createField())
+
+        return container
+    }
+
+    const createField = ()=>{
+        
+        const container = document.createElement('div');
+        container.classList.add('game-field')
+        container.appendChild(createUserGridContainer());
+        container.appendChild(createOpponentGridContainer());
+    
+        return container
+    }
+
+    const getStartButton = ()=>{
+        const button = document.createElement('button')
+        button.classList.add('start-button');
+        button.textContent = 'start'
+        button.addEventListener('click',onStart)
+        return button
+    }
 
     return {create}
     
 
 }
+
+
+function clearGrid(grid){
+    for(let i=0;i<10;i++){
+        for(let j=0;j<10;j++){
+            let cell = grid.querySelector(`#${getIdfromCordinates(i,j)}`)
+            cell.textContent = ""
+        }
+    }
+}
+
 
 function displayMessage(message){
     const messageSpan = document.querySelector('.message-span')
@@ -189,13 +213,11 @@ function displayMessage(message){
     messageSpan.textContent = message
 }
 
-
 function delay(ms){
     return new Promise((resolve,reject)=>{
         setTimeout(resolve,ms)
     })
 }
-
 
 function computerAttack(user){
     let x = genrateRandomNumber(10)
