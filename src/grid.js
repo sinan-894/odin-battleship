@@ -199,6 +199,27 @@ export function TwoPlayerField(user,opponent){
         }
     }
 
+    const placeShipSequence = (parent)=>{
+        const opponentPlace = PlaceShipGrid(opponent,()=>{
+            parent.innerHTML = ''
+            parent.appendChild(container.create())
+        })
+
+        const userPlace = PlaceShipGrid(user,()=>{
+            parent.innerHTML = ''
+            parent.appendChild(opponentPlace.createInterface())
+            const dialog = opponentPlace.createCoverForPlayer()
+            parent.appendChild(dialog)
+            dialog.showModal()
+        })
+        const dialog = userPlace.createCoverForPlayer()
+        parent.appendChild(userPlace.createInterface())
+        parent.appendChild(dialog)
+        dialog.showModal()
+
+    }
+
+
     const createUserGridContainer = createPlayerGridContainer(onUserCellClick)
     const createOpponentGridContainer = createPlayerGridContainer(onOppenentCellClick)
 
@@ -206,8 +227,84 @@ export function TwoPlayerField(user,opponent){
         createUserGridContainer(),createOpponentGridContainer(),onStart
     )
 
-    return container
+    return Object.assign({placeShipSequence},container)
 }
+
+
+
+function PlaceShipGrid(user,onSave){
+
+    const createInterface=()=>{
+        const container = document.createElement('div');
+        container.classList.add('place-ship-container')
+
+        const gridContainer  = document.createElement('div');
+        gridContainer.classList.add('place-ship-grid-container')
+        gridContainer.appendChild(generateGridBoard(user.userName,(cell)=>{}))
+        gridContainer.appendChild(getRandomPlaceButtonForUser())
+
+        const saveButton = document.createElement('button')
+        saveButton.textContent = 'save'
+        saveButton.addEventListener('click',onSave)
+        saveButton.classList.add('save-button')
+
+        container.appendChild(gridContainer)
+        container.appendChild(saveButton)
+
+        return container
+
+
+    }
+
+    const getRandomPlaceButtonForUser = ()=>{
+        const randomlyPlaceButton = document.createElement('button')
+        randomlyPlaceButton.textContent = 'random'
+        randomlyPlaceButton.addEventListener('click',onRandomPlacement)
+        randomlyPlaceButton.classList.add('random-place');
+        return randomlyPlaceButton
+    }
+
+    const onRandomPlacement = ()=>{
+       
+        user.board.clear()
+        user.board.randomizePlacement()
+        removeBackgrounds()
+        const grid = document.querySelector(`#${user.userName}`)
+        addShipsToUserGrid(grid,user)
+
+        
+    }
+
+    const createCoverForPlayer = (container)=>{
+        const dialog = document.createElement('dialog')
+        dialog.classList.add('cover-dialog')
+        dialog.id = `cover-for-${user.userName}`
+
+        const paragraph =document.createElement('p')
+        paragraph.textContent = user.userName+
+        ' is placing ships hide it from your opponent '
+        const button = document.createElement('button')
+        button.textContent = 'continue'
+        button.addEventListener('click',onContinue)
+
+        dialog.appendChild(paragraph)
+        dialog.appendChild(button)
+
+        return dialog
+
+    }
+
+    const onContinue = ()=>{
+        const dialog = document.querySelector(`#cover-for-${user.userName}`)
+        dialog.close()
+    }
+
+    return {createInterface,createCoverForPlayer}
+
+
+
+}
+
 
 function GameField(userGridContainer,opponentGridContainer,onStart){
     

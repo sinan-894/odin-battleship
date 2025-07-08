@@ -1,4 +1,4 @@
-import { GameField,ComputerField,TwoPlayerField} from "./grid.js";
+import { ComputerField,TwoPlayerField} from "./grid.js";
 import { Players } from "./gameplay.js";
 
 export function selectModeInterface(){
@@ -47,7 +47,7 @@ function onTwoPlayer(){
     console.log(playerOne,playerTwo)
     const field = TwoPlayerField(playerOne,playerTwo)
     document.body.innerHTML = ""
-    document.body.appendChild(field.create())
+    field.placeShipSequence(document.body)
 
 }
 
