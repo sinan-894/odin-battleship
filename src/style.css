@@ -19,6 +19,32 @@
     font-size: 2em;
 }
 
+.selector-2{
+    background-color: green;
+    height: 40px;
+    width : 80px
+}
+
+.selector-3{
+    background-color: red;
+    height: 40px;
+    width: 120px;
+
+}
+
+.selector-4{
+    background-color: orange;
+    height: 40px;
+    width: 160px;
+}
+
+.selector-5{
+    background-color: blue;
+    height: 40px;
+    width: 200px;
+}
+
+
 .len-2{
     background-color: green;
 }
