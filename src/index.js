@@ -58,7 +58,7 @@ function getIdfromCordinates(x,y){
 
 function EventHandler(){
     let length = 0
-    let isHorizontal = true
+    let isHorizontal = false
 
     const occupiedCell = []
     const selected = {}
@@ -124,10 +124,15 @@ function EventHandler(){
         })
     }
 
-    return {onCellClick,updateLength,getLength,onCellHover,onCellLeave}
+    const changeDirection = ()=>{
+        isHorizontal = !isHorizontal
+    }
+
+
+    return {onCellClick,updateLength,getLength,onCellHover,onCellLeave,changeDirection}
 }
 
-
+//length setter
 const selectorArray = Array.from(document.querySelectorAll('.selector'))
 let currentSelected = false
 selectorArray.forEach(selector=>{
@@ -143,3 +148,12 @@ selectorArray.forEach(selector=>{
         console.log(eventHandler.getLength())
     })
 })
+
+//isHorizontalSetter
+
+const directionButton = document.createElement('button');
+directionButton.textContent = 'change'
+directionButton.addEventListener('click',eventHandler.changeDirection)
+
+document.body.appendChild(directionButton)
+
