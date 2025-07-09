@@ -25,6 +25,100 @@ export function generateGridBoard(user,onCellPress){
     return gridContainer
 }
 
+function EventHandler(){
+    let length = 0
+    let isHorizontal = true
+
+    const occupiedCell = []
+    let counter = 5
+    const selected = []
+    const updateLength=(newLength)=>{
+        length = newLength
+    }
+    const getLength = ()=>length
+
+    const onCellClick = (cell)=>{
+        let [x,y] = getCordinatesFromId(cell.id)
+        console.log(x,y,'clicked')
+        if(isPlacable(x,y,length,isHorizontal) && length){
+            console.log(x,y,'clicked2')
+            saveShip(x,y)
+            cell.classList.add(`len-${length}`)
+            occupiedCell.push(cell.id)
+            for(let i=1;i<length;i++){
+                (isHorizontal)?y++:x++;
+                let cell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+                cell.classList.add(`len-${length}`)
+                occupiedCell.push(cell.id)
+                
+            }
+            removeSelectorDiv(length)
+            length = 0 
+        }
+
+    }
+
+    const saveShip = (x,y)=>{
+        if(!counter) return
+        selected.push([x,y,length,isHorizontal])
+        counter--
+    }
+
+    const getPositions = ()=>{
+        if(!counter){
+            return selected
+        }
+        return ;
+    }
+
+    const isPlacable  = (x,y,length,isHorizontal)=>{
+        if(
+            x>10 || x<0 || y>9 || y<0 ||
+            (isHorizontal && length+y>10) ||
+            (!isHorizontal && length+x>10) 
+        ) return false
+        
+        for(let i=0 ;i<length;i++){
+            if(occupiedCell.includes(getIdfromCordinates(x,y))) return false
+            console.log(x,y,'dfdf');    
+            (isHorizontal)?y++:x++;
+
+        }
+
+        return true
+
+    }
+
+    const onCellHover = (cell)=>{
+        let[x,y] = getCordinatesFromId(cell.id)
+        if(isPlacable(x,y,length,isHorizontal)){
+            cell.classList.add(`len-${length}-hover`)
+            for(let i=0;i<length-1;i++){
+                (isHorizontal)?y++:x++
+                let adCell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+                if(adCell) adCell.classList.add(`len-${length}-hover`)
+            }
+        }
+    }
+
+    const onCellLeave = (cell)=>{
+        let color = document.querySelectorAll(`.len-${length}-hover`);
+        color.forEach(cell=>{
+            cell.classList.remove(`len-${length}-hover`)
+        })
+    }
+
+    const changeDirection = ()=>{
+        isHorizontal = !isHorizontal
+    }
+
+
+    return {
+        onCellClick,updateLength,getLength,onCellHover,
+        onCellLeave,changeDirection,getPositions
+    }
+}
+
 function GameOver(user,opponent){
     const isGameOver = ()=>{
 
