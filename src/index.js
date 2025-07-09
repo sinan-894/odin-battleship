@@ -6,12 +6,17 @@
 
 
 const eventHandler = EventHandler()
-document.body.appendChild(generateGridBoard('test',eventHandler.onCellClick))
+document.body.appendChild(
+    generateGridBoard(
+        'test',eventHandler.onCellClick,eventHandler.onCellHover,
+        eventHandler.onCellLeave
+    )
+)
 
 
 
 
-function generateGridBoard(user,onCellPress){
+function generateGridBoard(user,onCellPress,onCellHover,onCellLeave){
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('grid-container')
     gridContainer.id = user
@@ -21,7 +26,8 @@ function generateGridBoard(user,onCellPress){
             let cell = document.createElement('div');
             cell.classList.add('cell-div');
             cell.addEventListener('click',()=>onCellPress(cell))
-            // cell.addEventListener('mouseover',(event)=>onCellHover(event,cell))
+            cell.addEventListener('mouseover',()=>onCellHover(cell))
+            cell.addEventListener('mouseleave',()=>onCellLeave(cell))
             cell.id = `${rowID[i]}${j+1}`
             gridContainer.appendChild(cell)
         }
@@ -31,23 +37,6 @@ function generateGridBoard(user,onCellPress){
 }
 
 
-// function onCellHover(e,cell){
-//     cell.classList.add('len-2')
-//     let[x,y] = getCordinatesFromId(cell.id)
-//     for(let i=0;i<2-1;i++){
-//         y++
-//         let adCell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
-//         if(adCell) adCell.classList.add('len-2')
-//     }
-//     cell.addEventListener('mouseleave',(event)=>onCellLeave(event,cell))
-// }
-
-// function onCellLeave(e,cell){let [x,y] = getCordinatesFromId(cell.id)
-//     let color = document.querySelectorAll('.len-2');
-//     color.forEach(cell=>{
-//         cell.classList.remove('len-2')
-//     })
-// }
 
 function getCordinatesFromId(id){
     let x = id[0].charCodeAt(0)-97
@@ -101,8 +90,8 @@ function EventHandler(){
     const isPlacable  = (x,y,length,isHorizontal)=>{
         if(
             x>10 || x<0 || y>9 || y<0 ||
-            (isHorizontal && length+y>9) ||
-            (!isHorizontal && length+x>9) 
+            (isHorizontal && length+y>10) ||
+            (!isHorizontal && length+x>10) 
         ) return false
         
         for(let i=0 ;i<length;i++){
@@ -116,7 +105,26 @@ function EventHandler(){
 
     }
 
-    return {onCellClick,updateLength,getLength}
+    const onCellHover = (cell)=>{
+        let[x,y] = getCordinatesFromId(cell.id)
+        if(isPlacable(x,y,length,isHorizontal)){
+            cell.classList.add(`len-${length}-hover`)
+            for(let i=0;i<length-1;i++){
+                (isHorizontal)?y++:x++
+                let adCell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+                if(adCell) adCell.classList.add(`len-${length}-hover`)
+            }
+        }
+    }
+
+    const onCellLeave = (cell)=>{
+        let color = document.querySelectorAll(`.len-${length}-hover`);
+        color.forEach(cell=>{
+            cell.classList.remove(`len-${length}-hover`)
+        })
+    }
+
+    return {onCellClick,updateLength,getLength,onCellHover,onCellLeave}
 }
 
 

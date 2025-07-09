@@ -45,18 +45,18 @@
 }
 
 
-.len-2{
+.len-2,.len-2-hover{
     background-color: green;
 }
 
-.len-3{
+.len-3,.len-3-hover{
     background-color: red;
 }
 
-.len-4{
+.len-4,.len-4-hover{
     background-color: orange;
 }
 
-.len-5{
+.len-5,.len-5-hover{
     background-color: blue;
 }
