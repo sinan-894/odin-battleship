@@ -55,6 +55,7 @@ const placeShipHandler = (function PlaceShipHandler(){
                 occupiedCell.push(cell.id)
                 
             }
+            onCellLeave(cell)
             removeSelectorDiv(length)
             length = 0 
         }
@@ -63,6 +64,7 @@ const placeShipHandler = (function PlaceShipHandler(){
 
     const saveShip = (x,y)=>{
         if(!counter) return
+        console.log([x,y,length,isHorizontal],'check this')
         selected.push([x,y,length,isHorizontal])
         counter--
     }
@@ -254,12 +256,27 @@ export function ComputerField(user,opponent){
 
         container.appendChild(getRandomPlaceButtonForUser())
         container.appendChild(getchangeDirectionButton())
+        container.appendChild(getResetButton())
         container.appendChild(getSaveButton())
         Selectors()
         
         
 
         return container
+    }
+    const getResetButton = ()=>{
+        const button = document.createElement('button');
+        button.classList.add('reset-button');
+        button.textContent = 'reset'
+        button.addEventListener('click',onReset)
+        return button
+    }
+
+    const onReset = ()=>{
+        placeShipHandler.reset()
+        removeBackgrounds()
+        removeSelectorContainer()
+        Selectors()
     }
 
     const getchangeDirectionButton = ()=>{
@@ -395,6 +412,7 @@ export function TwoPlayerField(user,opponent){
     }
 
     const placeShip = (positionArray=[],player)=>{
+        console.log(positionArray,'position')
         positionArray.forEach(position=>{
             let [x,y,length,isHorizontal] = position
             player.board.placeShipInTheBoard(x,y,length,isHorizontal)
@@ -429,6 +447,7 @@ function PlaceShipGrid(user,onSave){
         ))
         gridContainer.appendChild(getRandomPlaceButtonForUser())
         gridContainer.appendChild(getChangeDirectionButton())
+        gridContainer.appendChild(getResetButton())
 
         const saveSpan = document.createElement('span')
         saveSpan.classList.add('save-button-container')
@@ -448,6 +467,21 @@ function PlaceShipGrid(user,onSave){
         button.textContent = 'change direction'
         button.addEventListener('click',placeShipHandler.changeDirection)
         return button
+    }
+
+    const getResetButton = ()=>{
+        const button = document.createElement('button');
+        button.classList.add('reset-button');
+        button.textContent = 'reset'
+        button.addEventListener('click',onReset)
+        return button
+    }
+
+    const onReset = ()=>{
+        placeShipHandler.reset()
+        removeBackgrounds()
+        removeSelectorContainer()
+        Selectors()
     }
 
 
@@ -706,5 +740,11 @@ function Selectors(){
 function removeSelectorDiv(length){
     const continer = document.querySelector('.selector-container')
     const selectorDiv = document.querySelector(`.selector-${length}`)
+    console.log(selectorDiv)
     continer.removeChild(selectorDiv)
-} 
+}
+
+function removeSelectorContainer(){
+    const continer = document.querySelector('.selector-container')
+    parent.removeChild(continer)
+}
