@@ -252,5 +252,28 @@ describe('Gameboard',()=>{
 
     })
 
+    describe("Is Board Filled",()=>{
+        test('Filled',()=>{
+            board.placeShipInTheBoard(0,0,2,false)
+            board.placeShipInTheBoard(0,3,2,true)
+            board.placeShipInTheBoard(2,1,3,true)
+            board.placeShipInTheBoard(7,4,4,true)
+            board.placeShipInTheBoard(4,3,5,false)
+
+            expect(board.isBoardFilled()).toBeTruthy()
+
+        })
+
+        test('Not Filled',()=>{
+            board.placeShipInTheBoard(0,0,2,false)
+            board.placeShipInTheBoard(0,3,2,true)
+            board.placeShipInTheBoard(2,1,3,true)
+            board.placeShipInTheBoard(7,4,4,true)
+
+            expect(board.isBoardFilled()).toBeFalsy()
+
+        })
+    })
+
 
 })

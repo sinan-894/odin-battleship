@@ -135,12 +135,14 @@ export function GameBoard(){
         shipArray.splice(0,shipArray.length)
     }
 
+    const isBoardFilled = ()=>shipArray.length==5
+
 
     
 
 
 
-    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack,randomizePlacement,clear}
+    return {placeShipInTheBoard,isLost,placeShip,getState,receiveAttack,randomizePlacement,clear,isBoardFilled}
 
 }
 
