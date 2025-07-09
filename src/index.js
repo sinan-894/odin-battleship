@@ -82,7 +82,8 @@ function EventHandler(){
                 occupiedCell.push(cell.id)
                 
             }
-            length = 0
+            removeSelectorDiv(length)
+            length = 0 
         }
 
     }
@@ -157,3 +158,10 @@ directionButton.addEventListener('click',eventHandler.changeDirection)
 
 document.body.appendChild(directionButton)
 
+
+//removing selector div
+
+function removeSelectorDiv(length){
+    const selectorDiv = document.querySelector(`.selector-${length}`)
+    document.body.removeChild(selectorDiv)
+}  
