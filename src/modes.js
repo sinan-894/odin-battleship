@@ -43,7 +43,9 @@ function onComputer(){
 }
 
 function onTwoPlayer(){
-    const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
+    // const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
+    const playerOne = Players('messi')
+    const playerTwo  = Players('ronaldo')
 
     console.log(playerOne,playerTwo)
     const field = TwoPlayerField(playerOne,playerTwo)

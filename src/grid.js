@@ -69,11 +69,19 @@ const eventHandler = (function EventHandler(){
         counter--
     }
 
-    const getPositions = ()=>{
+    const getCompletePositions = ()=>{
         if(!counter){
+            reset()
             return selected
         }
         return ;
+    }
+
+    const reset = ()=>{
+        isHorizontal = true
+        counter = 5
+        occupiedCell.splice(0,occupiedCell.length)
+        selected.splice(0,selected.length)
     }
 
     const isPlacable  = (x,y,length,isHorizontal)=>{
@@ -120,7 +128,7 @@ const eventHandler = (function EventHandler(){
 
     return {
         onCellClick,updateLength,getLength,onCellHover,
-        onCellLeave,changeDirection,getPositions
+        onCellLeave,changeDirection,getCompletePositions
     }
 })()
 
@@ -276,7 +284,7 @@ export function ComputerField(user,opponent){
 
     const onSave  = ()=>{
         
-        let result = eventHandler.getPositions()
+        let result = eventHandler.getCompletePositions()
         if(!result) return
         result.forEach(pos=>{
             let [x,y,length,isHorizontal] = pos
@@ -349,15 +357,28 @@ export function TwoPlayerField(user,opponent){
         }
     }
 
-    const placeShipSequence = (parent)=>{
+    const placeShipSequence = ()=>{
         const opponentPlace = PlaceShipGrid(opponent,()=>{
+            let result = eventHandler.getCompletePositions()
+            if(!result || user.board.isBoardFilled()) return
+            placeShip(result,opponent)
+            const container = GameField(
+                createUserGridContainer(),
+                createOpponentGridContainer(),
+                onStart
+            )
             parent.innerHTML = ''
             parent.appendChild(container.create())
         })
 
         const userPlace = PlaceShipGrid(user,()=>{
+            let result = eventHandler.getCompletePositions()
+            if(!result || user.board.isBoardFilled()) return
+            placeShip(result,user)
+            
             parent.innerHTML = ''
             parent.appendChild(opponentPlace.createInterface())
+            Selectors()
             const dialog = opponentPlace.createCoverForPlayer()
             parent.appendChild(dialog)
             dialog.showModal()
@@ -365,20 +386,27 @@ export function TwoPlayerField(user,opponent){
         parent.innerHTML = ''
         const dialog = userPlace.createCoverForPlayer()
         parent.appendChild(userPlace.createInterface())
+        Selectors()
         parent.appendChild(dialog)
         dialog.showModal()
 
+    }
+
+    const placeShip = (positionArray=[],player)=>{
+        positionArray.forEach(position=>{
+            let [x,y,length,isHorizontal] = position
+            player.board.placeShipInTheBoard(x,y,length,isHorizontal)
+        })
+        console.log(player.board.getState())
     }
 
 
     const createUserGridContainer = createPlayerGridContainer(onUserCellClick)
     const createOpponentGridContainer = createPlayerGridContainer(onOppenentCellClick)
 
-    const container = GameField(
-        createUserGridContainer(),createOpponentGridContainer(),onStart
-    )
+    
 
-    return Object.assign({placeShipSequence},container)
+    return Object.assign({placeShipSequence})
 }
 
 
@@ -391,11 +419,18 @@ function PlaceShipGrid(user,onSave){
 
         const gridContainer  = document.createElement('div');
         gridContainer.classList.add('place-ship-grid-container')
-        gridContainer.appendChild(generateGridBoard(user.userName,(cell)=>{}))
+        gridContainer.appendChild(generateGridBoard(
+            user.userName,
+            eventHandler.onCellClick,
+            eventHandler.onCellHover,
+            eventHandler.onCellLeave
+        ))
         gridContainer.appendChild(getRandomPlaceButtonForUser())
+        gridContainer.appendChild(getChangeDirectionButton())
 
         const saveSpan = document.createElement('span')
-        saveSpan.classList.add('save-button-container') 
+        saveSpan.classList.add('save-button-container')
+        saveSpan.appendChild(getSaveButton()) 
 
         container.appendChild(gridContainer)
         container.appendChild(saveSpan)
@@ -404,6 +439,15 @@ function PlaceShipGrid(user,onSave){
 
 
     }
+
+    const getChangeDirectionButton = ()=>{
+        const button = document.createElement('button');
+        button.classList.add('change-direction-button');
+        button.textContent = 'change direction'
+        button.addEventListener('click',eventHandler.changeDirection)
+        return button
+    }
+
 
     const getRandomPlaceButtonForUser = ()=>{
         const randomlyPlaceButton = document.createElement('button')
@@ -423,10 +467,7 @@ function PlaceShipGrid(user,onSave){
         const saveSpan = document.querySelector('.save-button-container')
         console.log(saveSpan.innerHTML)
         if(saveSpan.innerHTML == ''){
-            const saveButton = document.createElement('button')
-            saveButton.textContent = 'save'
-            saveButton.addEventListener('click',onSave)
-            saveButton.classList.add('save-button')
+            const saveButton = getSaveButton()
             saveSpan.appendChild(saveButton)
         }
         
@@ -434,7 +475,15 @@ function PlaceShipGrid(user,onSave){
         
     }
 
-    const createCoverForPlayer = (container)=>{
+    const getSaveButton = ()=>{
+        const saveButton = document.createElement('button')
+        saveButton.textContent = 'save'
+        saveButton.addEventListener('click',onSave)
+        saveButton.classList.add('save-button')
+        return saveButton
+    }
+
+    const createCoverForPlayer = ()=>{
         const dialog = document.createElement('dialog')
         dialog.classList.add('cover-dialog')
         dialog.id = `cover-for-${user.userName}`
