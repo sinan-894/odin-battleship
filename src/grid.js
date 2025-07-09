@@ -1,4 +1,4 @@
-
+const parent = document.body
 
  
 function genrateRandomNumber(max){
@@ -7,7 +7,8 @@ function genrateRandomNumber(max){
 
 
  
-export function generateGridBoard(user,onCellPress){
+export function generateGridBoard(
+    user,onCellPress,onCellHover=()=>{},onCellLeave=()=>{}){
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('grid-container')
     gridContainer.id = user
@@ -17,6 +18,8 @@ export function generateGridBoard(user,onCellPress){
             let cell = document.createElement('div');
             cell.classList.add('cell-div');
             cell.addEventListener('click',()=>onCellPress(cell))
+            cell.addEventListener('mouseover',()=>onCellHover(cell))
+            cell.addEventListener('mouseleave',()=>onCellLeave(cell))
             cell.id = `${rowID[i]}${j+1}`
             gridContainer.appendChild(cell)
         }
@@ -25,7 +28,9 @@ export function generateGridBoard(user,onCellPress){
     return gridContainer
 }
 
-function EventHandler(){
+
+
+const eventHandler = (function EventHandler(){
     let length = 0
     let isHorizontal = true
 
@@ -117,7 +122,8 @@ function EventHandler(){
         onCellClick,updateLength,getLength,onCellHover,
         onCellLeave,changeDirection,getPositions
     }
-}
+})()
+
 
 function GameOver(user,opponent){
     const isGameOver = ()=>{
@@ -234,12 +240,53 @@ export function ComputerField(user,opponent){
         }
     }
 
+    const placeShip = ()=>{
+        const container = document.createElement('div')
+        container.classList.add('place-ship-container');
+
+        container.appendChild(generateGridBoard(
+            user.userName,eventHandler.onCellHover,eventHandler.onCellClick,
+            eventHandler.onCellLeave()
+        ))
+
+        container.appendChild(getRandomPlaceButtonForUser())
+        container.appendChild(getSaveButton())
+        
+        
+
+        const lenghtArray = [2,2,4,3,5]
+        lenghtArray.forEach((length,index)=>{
+            let selectorDiv = document.createElement('div');
+            selectorDiv.classList.add('selector')
+            if(length==2)selectorDiv.classList.add(`selector-${length}-${index+1}`)
+            else selectorDiv.classList.add(`selector-${length}`)
+            container.appendChild(selectorDiv)
+        })
+
+        return container
+
+
+    }
+
+    const getSaveButton = ()=>{
+        const button = document.createElement('button');
+        button.textContent = 'save'
+        button.classList.add('save-button');
+        button.addEventListener('click',onSave)
+        return button
+    }
+
+    const onSave  = ()=>{
+        parent.innerHTML = ""
+        parent.appendChild(container.create())
+    }
+
     const container = GameField(
         createUserGridContainer(),createOpponentGridContainer(),onStart
     )
 
     
-    return container
+    return Object.assign({placeShip},container)
 }
 
 export function TwoPlayerField(user,opponent){
@@ -569,4 +616,9 @@ function switchTurn(nextPlayer,currentPlayer){
     nextPlayer.giveTurn(true)
     currentPlayer.giveTurn(false)
     displayMessage(`${nextPlayer.userName}'s Turn`)
+}
+
+
+function createSelectorDivs(){
+    
 }

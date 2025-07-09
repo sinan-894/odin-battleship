@@ -1,6 +1,9 @@
 import { ComputerField,TwoPlayerField} from "./grid.js";
 import { Players } from "./gameplay.js";
 
+
+const parent = document.body
+
 export function selectModeInterface(){
     const container = document.createElement('div');
     container.classList.add('mode-selector-div');
@@ -37,8 +40,8 @@ function onComputer(){
     const field = ComputerField(user,computer)
     console.log(field,'dsd')
 
-    document.body.innerHTML = ""
-    document.body.appendChild(field.create())
+    parent.innerHTML = ""
+    parent.appendChild(field.placeShip())
 }
 
 function onTwoPlayer(){
@@ -46,8 +49,8 @@ function onTwoPlayer(){
 
     console.log(playerOne,playerTwo)
     const field = TwoPlayerField(playerOne,playerTwo)
-    document.body.innerHTML = ""
-    field.placeShipSequence(document.body)
+    parent.innerHTML = ""
+    field.placeShipSequence(parent)
 
 }
 
