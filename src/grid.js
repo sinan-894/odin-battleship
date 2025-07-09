@@ -18,7 +18,7 @@ export function generateGridBoard(
             let cell = document.createElement('div');
             cell.classList.add('cell-div');
             cell.addEventListener('click',()=>onCellPress(cell))
-            cell.addEventListener('mouseover',()=>onCellHover(cell))
+            cell.addEventListener('mouseover',()=>onCellHover(cell))      
             cell.addEventListener('mouseleave',()=>onCellLeave(cell))
             cell.id = `${rowID[i]}${j+1}`
             gridContainer.appendChild(cell)
@@ -245,29 +245,27 @@ export function ComputerField(user,opponent){
         container.classList.add('place-ship-container');
 
         container.appendChild(generateGridBoard(
-            user.userName,eventHandler.onCellHover,eventHandler.onCellClick,
-            eventHandler.onCellLeave()
+            user.userName,eventHandler.onCellClick,
+            eventHandler.onCellHover,eventHandler.onCellLeave
         ))
 
         container.appendChild(getRandomPlaceButtonForUser())
+        container.appendChild(getchangeDirectionButton())
         container.appendChild(getSaveButton())
+        Selectors()
         
         
-
-        const lenghtArray = [2,2,4,3,5]
-        lenghtArray.forEach((length,index)=>{
-            let selectorDiv = document.createElement('div');
-            selectorDiv.classList.add('selector')
-            if(length==2)selectorDiv.classList.add(`selector-${length}-${index+1}`)
-            else selectorDiv.classList.add(`selector-${length}`)
-            container.appendChild(selectorDiv)
-        })
 
         return container
-
-
     }
 
+    const getchangeDirectionButton = ()=>{
+        const button = document.createElement('button');
+        button.textContent = 'Change Direction'
+        button.classList.add('change-direction-button');
+        button.addEventListener('click',eventHandler.changeDirection)
+        return button
+    }
     const getSaveButton = ()=>{
         const button = document.createElement('button');
         button.textContent = 'save'
@@ -618,7 +616,35 @@ function switchTurn(nextPlayer,currentPlayer){
     displayMessage(`${nextPlayer.userName}'s Turn`)
 }
 
-
-function createSelectorDivs(){
+function Selectors(){
+    let currentSelectedDiv
+    const lenghtArray = [2,2,4,3,5]
+    const container = document.createElement('div');
+    container.classList.add('selector-container')
+    lenghtArray.forEach((length,index)=>{
+        let selectorDiv = document.createElement('div');
+        selectorDiv.classList.add('selector')
+        selectorDiv.addEventListener('click',()=>{
+            onSelect(selectorDiv,length)
+        })
+        if(index==1)selectorDiv.classList.add(`selector-${length}-${1}`)
+        selectorDiv.classList.add(`selector-${length}`)
+        container.appendChild(selectorDiv)
+    })
     
+    const onSelect = (div,length)=>{
+        if (currentSelectedDiv) currentSelectedDiv.classList.remove('selected')
+        div.classList.add('selected')
+        currentSelectedDiv = div
+        eventHandler.updateLength(length)
+    }
+
+    parent.appendChild(container)
+
 }
+
+function removeSelectorDiv(length){
+    const continer = document.querySelector('.selector-container')
+    const selectorDiv = document.querySelector(`.selector-${length}`)
+    continer.removeChild(selectorDiv)
+} 
