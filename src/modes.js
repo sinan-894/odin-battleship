@@ -26,8 +26,6 @@ export function selectModeInterface(){
 
 function onComputer(){
     const user  = Players('Messi')
-    const userBoard = user.board
-    userBoard.randomizePlacement()
     const computer = Players('Computer')
     const computerBoard = computer.board
 

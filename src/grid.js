@@ -275,16 +275,26 @@ export function ComputerField(user,opponent){
     }
 
     const onSave  = ()=>{
+        
+        let result = eventHandler.getPositions()
+        if(!result) return
+        result.forEach(pos=>{
+            let [x,y,length,isHorizontal] = pos
+            let isPlaced =user.board.placeShipInTheBoard(x,y,length,isHorizontal)
+            console.log(length,isPlaced,'placed')
+        })
+        console.log(user.board.getState())
         parent.innerHTML = ""
+        const container = GameField(
+            createUserGridContainer(),createOpponentGridContainer(),onStart
+        )
         parent.appendChild(container.create())
     }
 
-    const container = GameField(
-        createUserGridContainer(),createOpponentGridContainer(),onStart
-    )
+    
 
     
-    return Object.assign({placeShip},container)
+    return Object.assign({placeShip})
 }
 
 export function TwoPlayerField(user,opponent){
@@ -570,6 +580,7 @@ function addShipsToUserGrid(userGrid,user){
     const userBoard = user.board
     
     userBoard.getState().forEach((row,x)=>{
+        console.log('addSHipTOGRID')
         row.forEach((ship,y)=>{
             let cell = userGrid.querySelector(`#${getIdfromCordinates(x,y)}`)
             if(['H','X'].includes(ship)) cell.textContent = val
