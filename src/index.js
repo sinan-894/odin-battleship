@@ -58,10 +58,11 @@ function getIdfromCordinates(x,y){
 
 function EventHandler(){
     let length = 0
-    let isHorizontal = false
+    let isHorizontal = true
 
     const occupiedCell = []
-    const selected = {}
+    let counter = 5
+    const selected = []
     const updateLength=(newLength)=>{
         length = newLength
     }
@@ -72,7 +73,7 @@ function EventHandler(){
         console.log(x,y,'clicked')
         if(isPlacable(x,y,length,isHorizontal) && length){
             console.log(x,y,'clicked2')
-            selected[cell.id] = [x,y,length,isHorizontal]
+            saveShip(x,y)
             cell.classList.add(`len-${length}`)
             occupiedCell.push(cell.id)
             for(let i=1;i<length;i++){
@@ -86,6 +87,19 @@ function EventHandler(){
             length = 0 
         }
 
+    }
+
+    const saveShip = (x,y)=>{
+        if(!counter) return
+        selected.push([x,y,length,isHorizontal])
+        counter--
+    }
+
+    const getPositions = ()=>{
+        if(!counter){
+            return selected
+        }
+        return ;
     }
 
     const isPlacable  = (x,y,length,isHorizontal)=>{
@@ -130,7 +144,10 @@ function EventHandler(){
     }
 
 
-    return {onCellClick,updateLength,getLength,onCellHover,onCellLeave,changeDirection}
+    return {
+        onCellClick,updateLength,getLength,onCellHover,
+        onCellLeave,changeDirection,getPositions
+    }
 }
 
 //length setter
@@ -164,4 +181,23 @@ document.body.appendChild(directionButton)
 function removeSelectorDiv(length){
     const selectorDiv = document.querySelector(`.selector-${length}`)
     document.body.removeChild(selectorDiv)
-}  
+} 
+
+//on save
+
+const saveButton = document.createElement('button');
+saveButton.textContent = 'save'
+saveButton.addEventListener('click',onSave)
+
+document.body.appendChild(saveButton)
+
+function onSave(){
+    const result  = eventHandler.getPositions()
+    if (result){
+        console.log(result)
+    }
+    else{
+        console.log('does nothing')
+    }
+}
+
