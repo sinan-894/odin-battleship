@@ -202,6 +202,7 @@ export function attack(cell,player){
     let [x,y] =getCordinatesFromId(cell.id)
 
     const result = playerBoard.receiveAttack(x,y)
+    console.log(cell,player.userName,result)
 
     if(result){
         cell.textContent = result

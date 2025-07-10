@@ -168,7 +168,7 @@ export function TwoPlayerField(user,opponent){
 
     const onOppenentCellClick =  (cell)=>{
         if(user.isPlayersTurn() && !isGameOver()){
-            const attackResult = attack(cell,user);
+            const attackResult = attack(cell,opponent);
             if(!attackResult) return
             if (!isGameOver()){
                 user.giveTurn(false)
@@ -181,7 +181,8 @@ export function TwoPlayerField(user,opponent){
     const onUserCellClick =  (cell)=>{
         
         if(opponent.isPlayersTurn() && !isGameOver()){
-            const attackResult = attack(cell,opponent);
+            const attackResult = attack(cell,user);
+            console.log('')
             if(!attackResult) return
             if (!isGameOver()){
                 opponent.giveTurn(false)
@@ -199,6 +200,8 @@ export function TwoPlayerField(user,opponent){
                 createOpponentGridContainer(),
                 restart
             )
+            console.log(user.userName,user.board.getState())
+            console.log(opponent.userName,opponent.board.getState())
             container.display()
             toss()
         })
@@ -330,7 +333,7 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
             
             
         }
-        console.log(user.board.getState())
+        console.log(user.userName,user.board.getState())
         parent.innerHTML = ""
         afterSave()
     } 
