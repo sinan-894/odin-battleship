@@ -2,6 +2,10 @@ body{
     --right-pos-selector:0px;
     --top-pos-selector:0px;
     --test-border:0px solid black;
+    
+}
+
+.top-div{
     display: flex;
     align-items: center;
     justify-content: center;

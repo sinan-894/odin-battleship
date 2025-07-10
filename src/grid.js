@@ -2,13 +2,14 @@
 import {
     addShipsToUserGrid,attack,
     delay,displayMessage,
-    placeShipHandler,switchCLassNameTo,
+    placeShipHandler,
     removeBackgrounds,switchTurn,getSelectorsContainer,
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
 
 
 const parent = document.createElement('div')
+parent.classList.add('main-place-ship')
 const selectorParent = document.createElement('div')
 selectorParent.classList.add('selector-parent')
 const buttonParent = document.createElement('div')
@@ -37,28 +38,6 @@ export function ComputerField(user,opponent){
     }
 
    
-    const onStart = ()=>{
-        if(!Start){
-            Start = true
-            if(genrateRandomNumber(2)){
-                switchTurn(user,opponent)
-            }
-            else{
-                switchTurn(opponent,user)
-                delay(750).then(()=>{
-                    computerAttack(user)
-                })
-                delay(1500).then(()=>switchTurn(user,opponent))
-                
-            }
-        }
-        else{
-            restartGame()
-            displayMessage('')
-            Start = false
-        }
-        
-    }
 
 
     const onOppenentCellClick = async (cell)=>{
@@ -106,12 +85,28 @@ export function ComputerField(user,opponent){
         return result
     }
 
-    function afterSave(){
+    const afterSave = ()=>{
         const field = GameField(
-            createUserGridContainer(),createOpponentGridContainer(),onStart
+            createUserGridContainer(),createOpponentGridContainer()
         )
         field.display()
+        toss()
         
+    }
+
+    const toss = ()=>{
+        Start = true
+        if(genrateRandomNumber(2)){
+            switchTurn(user,opponent)
+        }
+        else{
+            switchTurn(opponent,user)
+            delay(750).then(()=>{
+                computerAttack(user)
+            })
+            delay(1500).then(()=>switchTurn(user,opponent))
+            
+        }
     }
 
     
@@ -136,13 +131,7 @@ export function TwoPlayerField(user,opponent){
     }
     const onStart = ()=>{
         if(!Start){
-            Start = true
-            if(genrateRandomNumber(2)){
-                switchTurn(user,opponent)
-            }
-            else{
-                switchTurn(opponent,user)
-            }
+            
         }
         else{
             displayMessage('')
@@ -180,6 +169,7 @@ export function TwoPlayerField(user,opponent){
                 onStart
             )
             container.display()
+            toss()
         })
 
         const userPlace = PlaceShipGrid(user,()=>{
@@ -196,6 +186,15 @@ export function TwoPlayerField(user,opponent){
 
         return container
 
+    }
+    const toss = ()=>{
+        Start = true
+        if(genrateRandomNumber(2)){
+            switchTurn(user,opponent)
+        }
+        else{
+            switchTurn(opponent,user)
+        }
     }
 
 
@@ -228,7 +227,6 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
         parent.appendChild(container)
         parent.appendChild(selectorParent)
         parent.appendChild(buttonParent)
-        switchCLassNameTo(parent,'main-place-ship')
         
         return parent
 
@@ -347,7 +345,7 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
 
 }
 
-function GameField(userGridContainer,opponentGridContainer,onStart){
+function GameField(userGridContainer,opponentGridContainer){
     
     const create = ()=>{
         const container = document.createElement('div')
@@ -359,7 +357,6 @@ function GameField(userGridContainer,opponentGridContainer,onStart){
         const messageSpan = document.createElement('span');
         messageSpan.classList.add('message-span');
 
-        header.appendChild(getStartButton())
         header.appendChild(messageSpan)
 
         container.appendChild(header)
@@ -378,17 +375,9 @@ function GameField(userGridContainer,opponentGridContainer,onStart){
         return container
     }
 
-    const getStartButton = ()=>{
-        const button = document.createElement('button')
-        button.classList.add('start-button');
-        button.textContent = 'start'
-        button.addEventListener('click',onStart)
-        return button
-    }
 
     const display = ()=>{
-        switchCLassNameTo(parent,'main-game-field')
-        parent.appendChild(create())
+        document.body.appendChild(create())
     }
 
     return {create,display}

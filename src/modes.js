@@ -2,7 +2,8 @@ import { ComputerField,TwoPlayerField} from "./grid.js";
 import { Players } from "./gameplay.js";
 
 
-const parent = document.body
+const parent = document.createElement('div');
+parent.classList.add('top-div')
 
 export function selectModeInterface(){
     const container = document.createElement('div');
@@ -19,7 +20,9 @@ export function selectModeInterface(){
     container.appendChild(computer)
     container.appendChild(twoPlayer)
 
-    return container
+    parent.appendChild(container)
+
+    return parent
     
 
 }
