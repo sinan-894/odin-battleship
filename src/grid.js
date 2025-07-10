@@ -7,7 +7,10 @@ import {
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
 // import pauseButtonImage from './pause-svgrepo-com.svg'
+import { selectModeInterface } from "./modes.js"
 
+
+const mainParent = document.querySelector('.top-div')
 const parent = document.createElement('div')
 parent.classList.add('main-place-ship')
 const selectorParent = document.createElement('div')
@@ -427,8 +430,12 @@ function GameField(userGridContainer,opponentGridContainer,restart){
     }
     const onNewGame = ()=>{
         dialog.close()
-        // document.body.removeChild(dialog)
-        // restart()
+        document.body.removeChild(dialog)
+        const mainParent = document.querySelector('.top-div')
+        mainParent.innerHTML = ""
+        gameFieldParent.innerHTML = ""
+        document.body.appendChild(selectModeInterface())
+
     }
     const onRestart = ()=>{
         dialog.close()
