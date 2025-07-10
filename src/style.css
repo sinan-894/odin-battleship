@@ -1,7 +1,122 @@
 body{
-    --right-pos-selector:100px;
-    --top-pos-selector:100px;
+    --right-pos-selector:0px;
+    --top-pos-selector:0px;
+    --test-border:0px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+
+
+/* select mode */
+.mode-selector-div{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: var(--test-border);
+    --button-font-size:1.5em;
+    padding: 50px;
+
+}
+
+#computer{
+    margin-bottom: 50px;
+    font-size: var(--button-font-size);
+}
+
+#two-player{
+    font-size: var(--button-font-size);
+}
+
+/* main parent */
+
+.main-div{
+    display: grid;
+    grid-template-columns: 500px 250px;
+}
+
+/* selectors div */
+
+.selector-parent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: var(--test-border);
+}
+
+.selector-container{
+    margin-top: 60px;
+    margin-bottom: 20px;
+}
+
+.selected{
+    border: 3px solid black;
+}
+
+.selector{
+    margin-bottom: 20px;
+}
+
+.selector-2,.selector-2-1{
+    background-color: green;
+    height: 40px;
+    width : 80px
+}
+
+
+.selector-3{
+    background-color: red;
+    height: 40px;
+    width: 120px;
+
+}
+
+.selector-4{
+    background-color: orange;
+    height: 40px;
+    width: 160px;
+}
+
+.selector-5{
+    background-color: blue;
+    height: 40px;
+    width: 200px;
+}
+
+.random-place{
+    font-size: 1.3em;
+    padding: 10px 20px 10px 20px;
+}
+
+/* button container */
+
+.button-parent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px 0px 25px 0px;
+    border: var(--test-border);
+    gap: 50px;
+}
+
+.reset-button,.save-button{
+    font-size: var(--button-font-size);
+    padding: 10px 50px 10px 50px;
+}
+/* place ship container */
+.grid-container{
+    display: grid;
+    grid-template-columns: repeat(10,1fr);
+    width: 400px;
+}
+
+.change-direction-button{
+    margin:10px 0px 20px 0px;
+}
+
+
 
 
 .game-field{
@@ -13,14 +128,11 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: var(--test-border);
     
 }
 
-.grid-container{
-    display: grid;
-    grid-template-columns: repeat(10,1fr);
-    width: 400px;
-}
+
 
 .cell-div{
     height: 40px;
@@ -31,51 +143,9 @@ body{
     font-size: 2em;
 }
 
-.selector{
-    position: absolute;
-    right: var(--right-pos-selector);
 
-}
 
-.selected{
-    border: 3px solid black;
-}
 
-.selector-2,.selector-2-1{
-    background-color: green;
-    height: 40px;
-    width : 80px
-}
-
-.selector-2{
-    top: var(--top-pos-selector);
-}
-
-.selector-2-1{
-    top: calc(var(--top-pos-selector) + 50px);
-}
-
-.selector-3{
-    top: calc(var(--top-pos-selector) + 100px);
-    background-color: red;
-    height: 40px;
-    width: 120px;
-
-}
-
-.selector-4{
-    top: calc(var(--top-pos-selector) + 150px);
-    background-color: orange;
-    height: 40px;
-    width: 160px;
-}
-
-.selector-5{
-    top: calc(var(--top-pos-selector) + 200px);
-    background-color: blue;
-    height: 40px;
-    width: 200px;
-}
 
 
 .len-2,.len-2-hover{
