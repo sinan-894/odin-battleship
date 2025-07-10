@@ -11,11 +11,11 @@ export function selectModeInterface(){
     const computer  = document.createElement('button');
     computer.id = 'computer'
     computer.textContent = 'Play Against Computer'
-    computer.addEventListener('click',onComputer)
+    computer.addEventListener('click',()=>inputUserNameDialog(1))
     const twoPlayer = document.createElement('button');
     twoPlayer.id = 'two-player'
     twoPlayer.textContent = 'Pass And Play'
-    twoPlayer.addEventListener('click',onTwoPlayer)
+    twoPlayer.addEventListener('click',()=>inputUserNameDialog(2))
      
     container.appendChild(computer)
     container.appendChild(twoPlayer)
@@ -27,8 +27,8 @@ export function selectModeInterface(){
 
 }
 
-function onComputer(){
-    const user  = Players('Messi')
+function onComputer(playerOne){
+    const user  = Players(playerOne)
     const computer = Players('Computer')
     const computerBoard = computer.board
 
@@ -40,9 +40,9 @@ function onComputer(){
     parent.appendChild(field.create())
 }
 
-function onTwoPlayer(){
-    const playerOne = Players('messi')
-    const playerTwo  = Players('ronaldo')
+function onTwoPlayer(playerOneName,playerTwoName){
+    const playerOne = Players(playerOneName)
+    const playerTwo  = Players(playerTwoName)
 
 
     const field = TwoPlayerField(playerOne,playerTwo)
@@ -50,4 +50,30 @@ function onTwoPlayer(){
     parent.appendChild(field.create())
 
 }
+
+function inputUserNameDialog(numberOfInputs){
+    let inputArray = []
+    const dialog = document.createElement('dialog')
+    for(let i=1 ;i<=numberOfInputs;i++){
+        let input = document.createElement('input')
+        input.type = 'text'
+        inputArray.push(input)
+        dialog.appendChild(input)
+    }
+    const button = document.createElement('button')
+    button.textContent = 'Start'
+    button.addEventListener('click',()=>{
+        inputArray = inputArray.map(input=>input.value)
+        document.body.removeChild(dialog)
+        dialog.close()
+        if(numberOfInputs==1) onComputer(inputArray[0])
+        else onTwoPlayer(inputArray[0],inputArray[1])
+
+    })
+    dialog.appendChild(button)
+    document.body.appendChild(dialog)
+    dialog.showModal()
+
+}
+
 
