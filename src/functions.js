@@ -3,7 +3,7 @@ import { selectModeInterface } from "./modes.js"
 
 export function GameOver(user,opponent){
     const isGameOver = ()=>{
-
+        (user.board.isLost(),opponent.board.isLost(),'is Lost')
         if(user.board.isLost()){
             displayMessage(`Game Over,${opponent.userName} won the match`)
             displayDialog(opponent.userName)
@@ -24,6 +24,7 @@ export function GameOver(user,opponent){
         const winnerAnnouncer = document.createElement('span')
         winnerAnnouncer.textContent = `${name} is the winnner`
         const button = document.createElement('button')
+        button.textContent = 'New Game'
         dialog.appendChild(winnerAnnouncer)
         dialog.appendChild(button)
         button.addEventListener('click',()=>{

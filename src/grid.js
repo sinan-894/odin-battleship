@@ -46,14 +46,26 @@ export function ComputerField(user,opponent){
 
 
     const onOppenentCellClick = async (cell)=>{
-        if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
+        const attackResult = attack(cell,opponent)
+        if(user.isPlayersTurn() && !isGameOver() && attackResult){
             //need to freeze the board until promise is resolved
             user.giveTurn(false)
             if(isGameOver()) return
             await delay(500)//wait attack result
-            if(Start) switchTurn(opponent,user)
+            if(Start){
+                if(attackResult=='H'){
+                    switchTurn(user,opponent)
+                    return
+                }
+                else switchTurn(opponent,user)
+            }
             await delay(500)//wait for opp switch turn result
-            if(Start) computerAttack(user)
+            if(Start){
+                while(computerAttack()=='H' && !isGameOver()){
+                    await delay(500)
+                    switchTurn(opponent,user)
+                }
+            }
             await delay(500)//wait for computer attack
             if(Start) switchTurn(user,opponent)
             if(isGameOver()) return
@@ -115,6 +127,7 @@ export function ComputerField(user,opponent){
     }
 
     const restartGame = ()=>{
+        Start = false
         gameFieldParent.innerHTML = ""
         user.board.clear()
         create()
@@ -125,6 +138,7 @@ export function ComputerField(user,opponent){
     
     return {create}
 }
+
 
 export function TwoPlayerField(user,opponent){
     let Start = false
@@ -153,20 +167,27 @@ export function TwoPlayerField(user,opponent){
     }
 
     const onOppenentCellClick =  (cell)=>{
-        
-        if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
+        if(user.isPlayersTurn() && !isGameOver()){
+            const attackResult = attack(cell,user);
+            if(!attackResult) return
             if (!isGameOver()){
                 user.giveTurn(false)
-                delay(1000).then(()=>switchTurn(opponent,user))
+                if(attackResult=='H') delay(1000).then(()=>switchTurn(user,opponent))
+                else delay(1000).then(()=>switchTurn(opponent,user))
             }
         }
     }
 
     const onUserCellClick =  (cell)=>{
-        if(opponent.isPlayersTurn() && !isGameOver() && attack(cell,user)){
+        
+        if(opponent.isPlayersTurn() && !isGameOver()){
+            const attackResult = attack(cell,opponent);
+            if(!attackResult) return
             if (!isGameOver()){
                 opponent.giveTurn(false)
-                delay(1000).then(()=>switchTurn(user,opponent))
+                console.log(attackResult)
+                if(attackResult=='H') delay(1000).then(()=>switchTurn(opponent,user))
+                else delay(1000).then(()=>switchTurn(user,opponent))
             }
         }
     }
@@ -208,6 +229,7 @@ export function TwoPlayerField(user,opponent){
     }
 
     const restart = ()=>{
+        Start = false
         gameFieldParent.innerHTML = ""
         user.board.clear()
         create()
