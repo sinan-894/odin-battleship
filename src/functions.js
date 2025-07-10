@@ -1,13 +1,17 @@
+import { selectModeInterface } from "./modes.js"
+
 
 export function GameOver(user,opponent){
     const isGameOver = ()=>{
 
         if(user.board.isLost()){
             displayMessage(`Game Over,${opponent.userName} won the match`)
+            displayDialog(opponent.userName)
             return true
         }
         else if(opponent.board.isLost()){
             displayMessage(`Game Over,${user.userName} won the match`)
+            displayDialog(user.userName)
             return true
         }
         else{
@@ -15,10 +19,32 @@ export function GameOver(user,opponent){
         }
     }
 
+    const displayDialog = (name)=>{
+        const dialog = document.createElement('dialog')
+        const winnerAnnouncer = document.createElement('span')
+        winnerAnnouncer.textContent = `${name} is the winnner`
+        const button = document.createElement('button')
+        dialog.appendChild(winnerAnnouncer)
+        dialog.appendChild(button)
+        button.addEventListener('click',()=>{
+            dialog.close()
+            document.body.removeChild(dialog)
+            startNewGame()
+        })
+        document.body.appendChild(dialog)
+        dialog.showModal() 
+    }
+
     return {isGameOver}
 }
 
-
+export function startNewGame(){
+    const mainParent = document.querySelector('.top-div')
+    const gameFieldParent = document.querySelector('.game-field-parent')
+    mainParent.innerHTML = ""
+    gameFieldParent.innerHTML = ""
+    document.body.appendChild(selectModeInterface())
+}
 
 export function genrateRandomNumber(max){
     return Math.floor(Math.random() * max);
