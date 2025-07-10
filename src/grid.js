@@ -28,17 +28,25 @@ export function ComputerField(user,opponent){
 
     const createUserGridContainer = ()=>{
         const container = document.createElement('div')
+        container.classList.add('main-grid-container')
         const userGrid = generateGridBoard(user.userName,(cell)=>{})
         addShipsToUserGrid(userGrid,user)
+        const span = document.createElement('span')
+        span.textContent = user.userName
         container.appendChild(userGrid)
+        container.appendChild(span)
         return container
 
     }
 
     const createOpponentGridContainer = ()=>{
         const opponentGridContainer = document.createElement('div')
+        opponentGridContainer.classList.add('main-grid-container')
         const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
+        const span = document.createElement('span')
+        span.textContent = opponent.userName
         opponentGridContainer.appendChild(opponentGrid)
+        opponentGridContainer.appendChild(span)
         return opponentGridContainer
     }
 
@@ -144,12 +152,16 @@ export function TwoPlayerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
 
-    const createPlayerGridContainer = (onCellClick)=>{
+    const createPlayerGridContainer = (player,onCellClick)=>{
 
         return ()=>{
             const container = document.createElement('div')
-            const userGrid = generateGridBoard(user.userName,onCellClick)
+            container.classList.add('main-grid-container')
+            const userGrid = generateGridBoard(player.userName,onCellClick)
+            const span = document.createElement('span')
+            span.textContent = player.userName
             container.appendChild(userGrid)
+            container.appendChild(span)
             return container
         }
 
@@ -241,8 +253,8 @@ export function TwoPlayerField(user,opponent){
 
 
 
-    const createUserGridContainer = createPlayerGridContainer(onUserCellClick)
-    const createOpponentGridContainer = createPlayerGridContainer(onOppenentCellClick)
+    const createUserGridContainer = createPlayerGridContainer(user,onUserCellClick)
+    const createOpponentGridContainer = createPlayerGridContainer(opponent,onOppenentCellClick)
 
     
 
