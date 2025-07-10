@@ -29,49 +29,22 @@ function onComputer(){
     const computer = Players('Computer')
     const computerBoard = computer.board
 
-    computerBoard.placeShipInTheBoard(0,0,2,false)
-    computerBoard.placeShipInTheBoard(0,3,2,true)
-    computerBoard.placeShipInTheBoard(2,1,3,true)
-    computerBoard.placeShipInTheBoard(7,4,4,true)
-    computerBoard.placeShipInTheBoard(4,3,5,false)
+    computerBoard.randomizePlacement()
 
     const field = ComputerField(user,computer)
-    console.log(field,'dsd')
 
     parent.innerHTML = ""
-    parent.appendChild(field.placeShip())
+    parent.appendChild(field.create())
 }
 
 function onTwoPlayer(){
-    // const [playerOne,playerTwo] = testPlayers('Messi','Ronaldo')
     const playerOne = Players('messi')
     const playerTwo  = Players('ronaldo')
 
-    console.log(playerOne,playerTwo)
+
     const field = TwoPlayerField(playerOne,playerTwo)
     parent.innerHTML = ""
-    field.placeShipSequence(parent)
+    parent.appendChild(field.create())
 
 }
 
-function testPlayers(player1,player2){
-    const playerOne = Players(player1)
-    const playerOneBoard = playerOne.board
-    playerOneBoard.placeShipInTheBoard(0,0,2,false)
-    playerOneBoard.placeShipInTheBoard(0,3,2,true)
-    playerOneBoard.placeShipInTheBoard(2,1,3,true)
-    playerOneBoard.placeShipInTheBoard(7,4,4,true)
-    playerOneBoard.placeShipInTheBoard(4,3,5,false)
-
-    const playerTwo  = Players(player2)
-    const playerTwoBoard = playerTwo.board
-    playerTwoBoard.placeShipInTheBoard(0,0,2,false)
-    playerTwoBoard.placeShipInTheBoard(0,3,2,true)
-    playerTwoBoard.placeShipInTheBoard(2,1,3,true)
-    playerTwoBoard.placeShipInTheBoard(7,4,4,true)
-    playerTwoBoard.placeShipInTheBoard(4,3,5,false)
-
-    return [playerOne,playerTwo]
-
-
-}

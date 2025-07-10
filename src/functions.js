@@ -1,0 +1,272 @@
+
+export function GameOver(user,opponent){
+    const isGameOver = ()=>{
+
+        if(user.board.isLost()){
+            displayMessage(`Game Over,${opponent.userName} won the match`)
+            return true
+        }
+        else if(opponent.board.isLost()){
+            displayMessage(`Game Over,${user.userName} won the match`)
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
+    return {isGameOver}
+}
+
+
+
+export function genrateRandomNumber(max){
+    return Math.floor(Math.random() * max);
+}
+
+
+ 
+export  function generateGridBoard(
+    user,onCellPress,onCellHover=()=>{},onCellLeave=()=>{}){
+    const gridContainer = document.createElement('div');
+    gridContainer.classList.add('grid-container')
+    gridContainer.id = user
+    const rowID = 'abcdefghij'
+    for(let i=0;i<10;i++){
+        for(let j=0;j<10;j++){
+            let cell = document.createElement('div');
+            cell.classList.add('cell-div');
+            cell.addEventListener('click',()=>onCellPress(cell))
+            cell.addEventListener('mouseover',()=>onCellHover(cell))      
+            cell.addEventListener('mouseleave',()=>onCellLeave(cell))
+            cell.id = `${rowID[i]}${j+1}`
+            gridContainer.appendChild(cell)
+        }
+    }
+
+    return gridContainer
+}
+
+
+
+export const placeShipHandler = ( function PlaceShipHandler(){
+    let length = 0
+    let isHorizontal = true
+
+    const occupiedCell = []
+    let counter = 5
+    const selected = []
+    const updateLength=(newLength)=>{
+        length = newLength
+    }
+    const getLength = ()=>length
+
+    const onCellClick = (cell)=>{
+        let [x,y] = getCordinatesFromId(cell.id)
+        if(isPlacable(x,y,length,isHorizontal) && length){
+            saveShip(x,y)
+            cell.classList.add(`len-${length}`)
+            occupiedCell.push(cell.id)
+            for(let i=1;i<length;i++){
+                (isHorizontal)?y++:x++;
+                let cell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+                cell.classList.add(`len-${length}`)
+                occupiedCell.push(cell.id)
+                
+            }
+            onCellLeave(cell)
+            removeSelectorDiv(length)
+            length = 0 
+        }
+
+    }
+
+    const  removeSelectorDiv = (length)=>{
+        const continer = document.querySelector('.selector-container')
+        const selectorDiv = document.querySelector(`.selector-${length}`)
+        console.log(selectorDiv)
+        continer.removeChild(selectorDiv)
+    }
+
+    const saveShip = (x,y)=>{
+        if(!counter) return
+        console.log([x,y,length,isHorizontal],'check this')
+        selected.push([x,y,length,isHorizontal])
+        counter--
+    }
+
+    const getCompletePositions = ()=>{
+        if(!counter){
+            return selected
+        }
+        return ;
+    }
+
+    const reset = ()=>{
+        isHorizontal = true
+        counter = 5
+        occupiedCell.splice(0,occupiedCell.length)
+        selected.splice(0,selected.length)
+    }
+
+    const isPlacable  = (x,y,length,isHorizontal)=>{
+        if(
+            x>10 || x<0 || y>9 || y<0 ||
+            (isHorizontal && length+y>10) ||
+            (!isHorizontal && length+x>10) 
+        ) return false
+        
+        for(let i=0 ;i<length;i++){
+            if(occupiedCell.includes(getIdfromCordinates(x,y))) return false;  
+            (isHorizontal)?y++:x++;
+
+        }
+
+        return true
+
+    }
+
+    const onCellHover = (cell)=>{
+        let[x,y] = getCordinatesFromId(cell.id)
+        if(isPlacable(x,y,length,isHorizontal)){
+            cell.classList.add(`len-${length}-hover`)
+            for(let i=0;i<length-1;i++){
+                (isHorizontal)?y++:x++
+                let adCell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+                if(adCell) adCell.classList.add(`len-${length}-hover`)
+            }
+        }
+    }
+
+    const onCellLeave = (cell)=>{
+        let color = document.querySelectorAll(`.len-${length}-hover`);
+        color.forEach(cell=>{
+            cell.classList.remove(`len-${length}-hover`)
+        })
+    }
+
+    const changeDirection = ()=>{
+        isHorizontal = !isHorizontal
+    }
+
+
+    return {
+        onCellClick,updateLength,getLength,onCellHover,
+        onCellLeave,changeDirection,getCompletePositions,reset
+    }
+})()
+
+export function displayMessage(message){
+    const messageSpan = document.querySelector('.message-span')
+    messageSpan.innerHTML = ''
+    messageSpan.textContent = message
+}
+
+export function delay(ms){
+    return new Promise((resolve,reject)=>{
+        setTimeout(resolve,ms)
+    })
+}
+
+
+
+export function attack(cell,player){
+    const playerBoard = player.board
+    let [x,y] =getCordinatesFromId(cell.id)
+
+    const result = playerBoard.receiveAttack(x,y)
+
+    if(result){
+        cell.textContent = result
+    }
+    else{
+        console.log('already guessed')
+        return 
+    }
+
+    if(result=='H') displayMessage('Its A HIT!!')
+    else displayMessage('Miss!!')
+
+    return result
+
+
+
+}
+
+export function addShipsToUserGrid(userGrid,user){
+    const userBoard = user.board
+    
+    userBoard.getState().forEach((row,x)=>{
+        row.forEach((ship,y)=>{
+            let cell = userGrid.querySelector(`#${getIdfromCordinates(x,y)}`)
+            if(['H','X'].includes(ship)) cell.textContent = val
+
+            if(ship) cell.classList.add(`len-${ship.length}`) 
+        })
+    })
+}
+
+export function removeBackgrounds(){
+    const lengthArray = [2,3,4,5]
+
+    lengthArray.forEach(length=>{
+        let cells = Array.from(
+            document.querySelectorAll(`.len-${length}`)
+        )
+        cells.forEach(cell=>{
+            cell.classList.remove(`len-${length}`)
+        }) 
+    })
+}
+
+function getCordinatesFromId(id){
+    let x = id[0].charCodeAt(0)-97
+    let y = Number(id.substr(1))-1
+
+    return [x,y]
+}
+
+export function getIdfromCordinates(x,y){
+    const rowId = 'abcdefghij'
+
+    return `${rowId[x]}${y+1}`
+
+}
+
+export function switchTurn(nextPlayer,currentPlayer){
+    nextPlayer.giveTurn(true)
+    currentPlayer.giveTurn(false)
+    displayMessage(`${nextPlayer.userName}'s Turn`)
+}
+
+export function getSelectorsContainer(){
+    let currentSelectedDiv
+    const lenghtArray = [2,2,3,4,5]
+    const container = document.createElement('div');
+    container.classList.add('selector-container')
+    lenghtArray.forEach((length,index)=>{
+        let selectorDiv = document.createElement('div');
+        selectorDiv.classList.add('selector')
+        selectorDiv.addEventListener('click',()=>{
+            onSelect(selectorDiv,length)
+        })
+        selectorDiv.classList.add(`selector-${length}`)
+        container.appendChild(selectorDiv)
+    })
+    
+    const onSelect = (div,length)=>{
+        if (currentSelectedDiv) currentSelectedDiv.classList.remove('selected')
+        div.classList.add('selected')
+        currentSelectedDiv = div
+        placeShipHandler.updateLength(length)
+    }
+
+    return container
+
+}
+
+export function switchCLassNameTo(div=document.createElement('div'),className){
+    const classList = Array.from(div.classList)
+    classList.forEach(name=>{div.classList.remove(name)})
+    div.classList.add(className)
+}

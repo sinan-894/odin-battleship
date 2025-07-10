@@ -32,7 +32,7 @@ body{
 
 /* main parent */
 
-.main-div{
+.main-place-ship{
     display: grid;
     grid-template-columns: 500px 250px;
 }
@@ -49,6 +49,7 @@ body{
 .selector-container{
     margin-top: 60px;
     margin-bottom: 20px;
+    height: 300px;
 }
 
 .selected{
@@ -57,6 +58,7 @@ body{
 
 .selector{
     margin-bottom: 20px;
+    
 }
 
 .selector-2,.selector-2-1{
