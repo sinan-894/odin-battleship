@@ -154,6 +154,7 @@ export function TwoPlayerField(user,opponent){
         }
 
     }
+
     const onStart = ()=>{
         if(!Start){
             
@@ -345,7 +346,8 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
         removeBackgrounds()
         const grid = document.querySelector(`#${user.userName}`)
         addShipsToUserGrid(grid,user)
-        isPlacedRandomly = true   
+        isPlacedRandomly = true 
+        selectorParent.firstChild.innerHTML = ""
     }
 
     const onReset = ()=>{
