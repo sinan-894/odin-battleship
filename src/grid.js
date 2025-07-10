@@ -6,7 +6,7 @@ import {
     removeBackgrounds,switchTurn,getSelectorsContainer,
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
-
+// import pauseButtonImage from './pause-svgrepo-com.svg'
 
 const parent = document.createElement('div')
 parent.classList.add('main-place-ship')
@@ -14,6 +14,8 @@ const selectorParent = document.createElement('div')
 selectorParent.classList.add('selector-parent')
 const buttonParent = document.createElement('div')
 buttonParent.classList.add('button-parent')
+const gameFieldParent = document.createElement('div')
+document.body.appendChild(gameFieldParent)
 
 
 
@@ -87,7 +89,7 @@ export function ComputerField(user,opponent){
 
     const afterSave = ()=>{
         const field = GameField(
-            createUserGridContainer(),createOpponentGridContainer()
+            createUserGridContainer(),createOpponentGridContainer(),restartGame
         )
         field.display()
         toss()
@@ -107,6 +109,12 @@ export function ComputerField(user,opponent){
             delay(1500).then(()=>switchTurn(user,opponent))
             
         }
+    }
+
+    const restartGame = ()=>{
+        gameFieldParent.innerHTML = ""
+        user.board.clear()
+        create()
     }
 
     
@@ -141,7 +149,6 @@ export function TwoPlayerField(user,opponent){
         
     }
 
-
     const onOppenentCellClick =  (cell)=>{
         
         if(user.isPlayersTurn() && !isGameOver() && attack(cell,opponent)){
@@ -166,7 +173,7 @@ export function TwoPlayerField(user,opponent){
             const container = GameField(
                 createUserGridContainer(),
                 createOpponentGridContainer(),
-                onStart
+                restart
             )
             container.display()
             toss()
@@ -195,6 +202,12 @@ export function TwoPlayerField(user,opponent){
         else{
             switchTurn(opponent,user)
         }
+    }
+
+    const restart = ()=>{
+        gameFieldParent.innerHTML = ""
+        user.board.clear()
+        create()
     }
 
 
@@ -345,7 +358,10 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
 
 }
 
-function GameField(userGridContainer,opponentGridContainer){
+function GameField(userGridContainer,opponentGridContainer,restart){
+
+    const dialog = document.createElement('dialog')
+    
     
     const create = ()=>{
         const container = document.createElement('div')
@@ -356,11 +372,12 @@ function GameField(userGridContainer,opponentGridContainer){
 
         const messageSpan = document.createElement('span');
         messageSpan.classList.add('message-span');
-
         header.appendChild(messageSpan)
 
         container.appendChild(header)
         container.appendChild(createField())
+        document.body.appendChild(dialog)
+        addButtonsToDialog()
 
         return container
     }
@@ -370,20 +387,60 @@ function GameField(userGridContainer,opponentGridContainer){
         const container = document.createElement('div');
         container.classList.add('game-field')
         container.appendChild(userGridContainer);
+        container.appendChild(getPauseButton())
         container.appendChild(opponentGridContainer);
     
         return container
     }
+    const getPauseButton = ()=>{
+        const pauseButton = document.createElement('button');
+        pauseButton.classList.add('pause-button')
+        const img = document.createElement('img');
+        img.src = './pause-svgrepo-com.svg'
+        pauseButton.appendChild(img)
+        pauseButton.addEventListener('click',()=>dialog.showModal())
 
+        return pauseButton
 
+    }
     const display = ()=>{
-        document.body.appendChild(create())
+        gameFieldParent.appendChild(create())
+    }
+
+    const addButtonsToDialog = ()=>{
+        dialog.appendChild(getButton('newgame',onNewGame))
+        dialog.appendChild(getButton('restart',onRestart))
+        dialog.appendChild(getButton('close',onClose))
+    }
+
+    const getButton = (name,onPress)=>{
+        const button = document.createElement('button')
+        button.textContent = name
+        button.classList.add(`${name}-button`)
+        button.addEventListener('click',onPress)
+        return button
+    }
+
+    const onClose = ()=>{
+        dialog.close()
+        // document.body.removeChild(dialog
+    }
+    const onNewGame = ()=>{
+        dialog.close()
+        // document.body.removeChild(dialog)
+        // restart()
+    }
+    const onRestart = ()=>{
+        dialog.close()
+        document.body.removeChild(dialog)
+        restart()
     }
 
     return {create,display}
     
 
 }
+
 
 
 
