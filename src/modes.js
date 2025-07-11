@@ -63,7 +63,11 @@ function inputUserNameDialog(numberOfInputs){
     const button = document.createElement('button')
     button.textContent = 'Start'
     button.addEventListener('click',()=>{
-        inputArray = inputArray.map(input=>input.value)
+        
+        inputArray = inputArray.map((input,index)=>{
+            if(input.value=='') input.value=`player-${index+1}`
+            return input.value
+        })
         document.body.removeChild(dialog)
         dialog.close()
         if(numberOfInputs==1) onComputer(inputArray[0])
