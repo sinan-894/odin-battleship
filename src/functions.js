@@ -283,7 +283,15 @@ export function getSelectorsContainer(){
     })
     
     const onSelect = (div,length)=>{
+        console.log(currentSelectedDiv==div)
         if (currentSelectedDiv) currentSelectedDiv.classList.remove('selected')
+        
+        if (currentSelectedDiv == div){
+            placeShipHandler.updateLength(0)
+            currentSelectedDiv = null 
+            return ;
+        }
+        console.log(currentSelectedDiv,div)
         div.classList.add('selected')
         currentSelectedDiv = div
         placeShipHandler.updateLength(length)
