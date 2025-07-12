@@ -194,11 +194,9 @@ export function TwoPlayerField(user,opponent){
         
         if(opponent.isPlayersTurn() && !isGameOver()){
             const attackResult = attack(cell,user);
-            console.log('')
             if(!attackResult) return
             if (!isGameOver()){
                 opponent.giveTurn(false)
-                console.log(attackResult)
                 if(attackResult=='H') delay(delayTime).then(()=>switchTurn(opponent,user))
                 else delay(delayTime).then(()=>switchTurn(user,opponent))
             }
@@ -212,8 +210,6 @@ export function TwoPlayerField(user,opponent){
                 createOpponentGridContainer(),
                 restart
             )
-            console.log(user.userName,user.board.getState())
-            console.log(opponent.userName,opponent.board.getState())
             container.display()
             toss()
         })
@@ -342,13 +338,11 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
             result.forEach(pos=>{
                 let [x,y,length,isHorizontal] = pos
                 let isPlaced =user.board.placeShipInTheBoard(x,y,length,isHorizontal)
-                console.log(length,isPlaced,'placed')
             })
             placeShipHandler.reset()
             
             
         }
-        console.log(user.userName,user.board.getState())
         parent.innerHTML = ""
         afterSave()
     } 
