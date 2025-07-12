@@ -6,7 +6,7 @@ import {
     removeBackgrounds,switchTurn,getSelectorsContainer,
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
-const pauseButtonImage = './pause-svgrepo-com.svg'
+import  pauseButtonImage from './pause-svgrepo-com.svg'
 
 
 const parent = document.createElement('div')
@@ -23,7 +23,7 @@ document.body.appendChild(gameFieldParent)
 
 export function ComputerField(user,opponent){
     let Start = false
-    let delayTime = 500
+    let delayTime = 750
     const {isGameOver} = GameOver(user,opponent)
 
     const createUserGridContainer = ()=>{
@@ -72,12 +72,7 @@ export function ComputerField(user,opponent){
                 else switchTurn(opponent,user)
             }
             await delay(delayTime)//wait for opp switch turn result
-            if(Start){
-                while(computerAttack()=='H' && !isGameOver()){
-                    await delay(delayTime)
-                    switchTurn(opponent,user)
-                }
-            }
+            if(Start){await computerTurn()}
             await delay(delayTime)//wait for computer attack
             if(Start) switchTurn(user,opponent)
             if(isGameOver()) return
@@ -91,6 +86,13 @@ export function ComputerField(user,opponent){
         return container
     }
 
+    const computerTurn = async ()=>{
+        while(computerAttack()=='H' && !isGameOver()){
+            await delay(delayTime)
+            switchTurn(opponent,user)
+            await delay(delayTime)
+        }
+    }
     const  computerAttack = ()=>{
         let x = genrateRandomNumber(10)
         let y = genrateRandomNumber(10)
@@ -130,10 +132,12 @@ export function ComputerField(user,opponent){
         }
         else{
             switchTurn(opponent,user)
-            delay(750).then(()=>{
-                computerAttack(user)
-            })
-            delay(1500).then(()=>switchTurn(user,opponent))
+            delay(750)
+            .then(()=>computerTurn())
+            .then(()=>delay(750))
+            .then(()=>switchTurn(user,opponent))
+
+            
             
         }
     }
@@ -155,7 +159,7 @@ export function ComputerField(user,opponent){
 export function TwoPlayerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
-    const delayTime = 500
+    const delayTime = 750
 
     const createPlayerGridContainer = (player,onCellClick)=>{
 
