@@ -155,20 +155,27 @@ export const placeShipHandler = ( function PlaceShipHandler(){
 
     const onCellHover = (cell)=>{
         let[x,y] = getCordinatesFromId(cell.id)
-        if(isPlacable(x,y,length,isHorizontal)){
-            cell.classList.add(`len-${length}-hover`)
-            for(let i=0;i<length-1;i++){
-                (isHorizontal)?y++:x++
-                let adCell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
-                if(adCell) adCell.classList.add(`len-${length}-hover`)
+        const color = (isPlacable(x,y,length,isHorizontal))?'green':'red'
+        for(let i=0;i<length;i++){
+            if(cell){
+                cell.classList.add(`len-hover`)
+                cell.classList.add(`len-hover-${color}`)
+
             }
+            (isHorizontal)?y++:x++
+            cell = document.querySelector(`#${getIdfromCordinates(x,y)}`)
+            
         }
+        
     }
 
     const onCellLeave = (cell)=>{
-        let color = document.querySelectorAll(`.len-${length}-hover`);
+        let color = document.querySelectorAll(`.len-hover`);
+        console.log(color,'color')
         color.forEach(cell=>{
-            cell.classList.remove(`len-${length}-hover`)
+            cell.classList.remove(`len-hover`)
+            cell.classList.remove(`len-hover-green`)
+            cell.classList.remove(`len-hover-red`)
         })
     }
 
