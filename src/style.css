@@ -154,23 +154,28 @@ body{
 
 
 
-.len-2,.len-2-hover{
+.len-2{
     background-color: green;
 }
 
-.len-3,.len-3-hover{
+.len-3{
     background-color: red;
 }
 
-.len-4,.len-4-hover{
+.len-4{
     background-color: orange;
 }
 
-.len-5-hover{
-    background-color: black;
-}
 .len-5{
     background-color: blue;
+}
+
+.len-hover-red{
+    background-color: oklch(70.4% 0.191 22.216);
+}
+
+.len-hover-green{
+    background-color: oklch(89.7% 0.196 126.665);
 }
 
 
