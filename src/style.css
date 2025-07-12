@@ -361,3 +361,7 @@ dialog span{
     color: var(--font-color);;
     text-align: center;
 }
+
+.result-image{
+    width: 30px;
+}

@@ -1,6 +1,6 @@
 
 import {
-    addShipsToUserGrid,attack,
+    addShipsToUserGrid,attack,addImageToCell,
     delay,displayMessage,
     placeShipHandler,startNewGame,
     removeBackgrounds,switchTurn,getSelectorsContainer,
@@ -108,7 +108,7 @@ export function ComputerField(user,opponent){
             result = userBoard.receiveAttack(x,y)
         }
         const cell = document.querySelector(`#${user.userName} #${getIdfromCordinates(x,y)}`)
-        cell.textContent = result
+        addImageToCell(cell,result)
     
         if(result=='H') displayMessage('Its A HIT!!')
         else displayMessage('Miss!!')

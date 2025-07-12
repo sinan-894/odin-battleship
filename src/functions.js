@@ -1,4 +1,7 @@
 import { selectModeInterface } from "./modes.js"
+import redCrossImage from './cross-mark-svgrepo-com.svg'
+import blackDotImage from "./dot-mark-svgrepo-com.svg"
+
 
 
 export function GameOver(user,opponent){
@@ -209,7 +212,7 @@ export function attack(cell,player){
     const result = playerBoard.receiveAttack(x,y)
 
     if(result){
-        cell.textContent = result
+        addImageToCell(cell,result)
     }
     else{
         console.log('already guessed')
@@ -307,4 +310,13 @@ export function switchCLassNameTo(div=document.createElement('div'),className){
     const classList = Array.from(div.classList)
     classList.forEach(name=>{div.classList.remove(name)})
     div.classList.add(className)
+}
+
+export function addImageToCell(cell = document.createElement('div'),result){
+    const img  = document.createElement('img')
+    img.classList.add('result-image')
+    if(result=='H')img.src = redCrossImage
+    else img.src = blackDotImage
+
+    cell.appendChild(img)
 }
