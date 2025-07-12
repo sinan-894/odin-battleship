@@ -41,6 +41,7 @@ function onComputer(playerOne){
     const computerBoard = computer.board
 
     computerBoard.randomizePlacement()
+    console.log('computer',computerBoard.getState())
 
     const field = ComputerField(user,computer)
 

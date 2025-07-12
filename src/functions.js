@@ -112,13 +112,11 @@ export const placeShipHandler = ( function PlaceShipHandler(){
     const  removeSelectorDiv = (length)=>{
         const continer = document.querySelector('.selector-container')
         const selectorDiv = document.querySelector(`.selector-${length}`)
-        console.log(selectorDiv)
         continer.removeChild(selectorDiv)
     }
 
     const saveShip = (x,y)=>{
         if(!counter) return
-        console.log([x,y,length,isHorizontal],'check this')
         selected.push([x,y,length,isHorizontal])
         counter--
     }
@@ -172,7 +170,6 @@ export const placeShipHandler = ( function PlaceShipHandler(){
 
     const onCellLeave = (cell)=>{
         let color = document.querySelectorAll(`.len-hover`);
-        console.log(color,'color')
         color.forEach(cell=>{
             cell.classList.remove(`len-hover`)
             cell.classList.remove(`len-hover-green`)
@@ -210,7 +207,6 @@ export function attack(cell,player){
     let [x,y] =getCordinatesFromId(cell.id)
 
     const result = playerBoard.receiveAttack(x,y)
-    console.log(cell,player.userName,result)
 
     if(result){
         cell.textContent = result
@@ -291,7 +287,6 @@ export function getSelectorsContainer(){
     })
     
     const onSelect = (div,length)=>{
-        console.log(currentSelectedDiv==div)
         if (currentSelectedDiv) currentSelectedDiv.classList.remove('selected')
         
         if (currentSelectedDiv == div){
@@ -299,7 +294,6 @@ export function getSelectorsContainer(){
             currentSelectedDiv = null 
             return ;
         }
-        console.log(currentSelectedDiv,div)
         div.classList.add('selected')
         currentSelectedDiv = div
         placeShipHandler.updateLength(length)

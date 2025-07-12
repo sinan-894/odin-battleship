@@ -108,21 +108,18 @@ export function GameBoard(){
         const lengthArray = [2,2,3,4,5]
 
         lengthArray.forEach(length=>{
-            console.log(length,'le')
             let x = genrateRandomNumber(10)
             let y = genrateRandomNumber(10)
             let isHorizontal = genrateRandomNumber(2)
             let result = placeShipInTheBoard(x,y,length,isHorizontal)
 
             while(!result){
-                console.log('result',result)
                 x = genrateRandomNumber(10)
                 y = genrateRandomNumber(10)
                 isHorizontal = genrateRandomNumber(2)
                 result = placeShipInTheBoard(x,y,length,isHorizontal)
                 
             }
-            console.log(result,'final')
 
         })
     }
