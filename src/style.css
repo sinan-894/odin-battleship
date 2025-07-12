@@ -2,6 +2,15 @@ body{
     --right-pos-selector:0px;
     --top-pos-selector:0px;
     --test-border:0px solid black;
+    --div-bg-color:black;
+    --main-bg-color:#1e40af;
+    --font-color:aliceblue;
+    --dialog-button-color:oklch(44.4% 0.011 73.639);
+    --dialog-input-bg-color:#1c1c1c;
+    --dialog-bg-color:#171717;
+    --cell-bg-color:#38bdf8;
+    --place-ship-page-button-color:#0284c7;
+    background-color: var(--main-bg-color);
     
 }
 
@@ -9,9 +18,20 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--main-bg-color);
 }
 
+.top-div button{
+    /* padding: 10px; */
+    border-radius: 10px;
+    border: 0px;
+    color: var(--font-color);
+    background-color: var(--place-ship-page-button-color);
+}
 
+.change-direction-button{
+    padding: 10px;
+}
 
 /* select mode */
 .mode-selector-div{
@@ -21,8 +41,16 @@ body{
     align-items: center;
     border: var(--test-border);
     --button-font-size:1.5em;
+    background-color: var(--div-bg-color);
+    border-radius: 20px;
     padding: 50px;
 
+}
+
+.mode-selector-div button{
+    border-radius: 20px;
+    width: 100%;
+    padding: 10px;
 }
 
 #computer{
@@ -48,6 +76,8 @@ body{
     flex-direction: column;
     align-items: center;
     border: var(--test-border);
+    background-color: var(--div-bg-color);
+    border-radius: 10px;
 }
 
 .selector-container{
@@ -105,6 +135,10 @@ body{
     padding: 25px 0px 25px 0px;
     border: var(--test-border);
     gap: 50px;
+    background-color: var(--div-bg-color);
+    border-radius: 10px;
+    margin-top: 20px;
+
 }
 
 .reset-button,.save-button{
@@ -116,6 +150,7 @@ body{
     display: grid;
     grid-template-columns: repeat(10,1fr);
     width: 400px;
+    background-color: var(--cell-bg-color);
 }
 
 .change-direction-button{
@@ -138,6 +173,17 @@ body{
     
 }
 
+.place-ship-container> button{
+    background-color: var(--dialog-bg-color);
+}
+
+.message-span,.username-span{
+    background-color: var(--div-bg-color);
+    color: var(--font-color);
+    border-radius: 20px;
+    padding: 5px 10px;
+    text-align: center;
+}
 
 
 .cell-div{
@@ -149,8 +195,15 @@ body{
     font-size: 2em;
 }
 
+.message-span{
+    width: 25%;
+    padding: 25px;
+}
 
-
+.username-span{
+    margin-top: 10px;
+    padding: 10px 10px 10px 10px;
+}
 
 
 
@@ -184,8 +237,7 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-bottom: 50px;
-    margin-top: 40px;
+    margin-bottom: 20px;
     
 }
 
@@ -197,12 +249,16 @@ body{
 .pause-button{
     padding: 0px;
     border: 0px;
-    background-color: white;
+    background-color: var(--main-bg-color);
 }
 
 .pause-button > img{
     width: 40px;
 
+}
+.pause-button-container{
+    display: flex;
+    align-items: center;
 }
 
 .main-grid-container{
@@ -232,7 +288,7 @@ body{
 
 dialog{
     border-radius: 20px;
-    background-color: #171717;
+    background-color: var(--dialog-bg-color);
     border: 0px;
     padding: 30px;
     display: flex;
@@ -242,8 +298,8 @@ dialog{
 }
 
 dialog input{
-    background-color: #1c1c1c;
-    color:aliceblue;
+    background-color: var(--dialog-input-bg-color);
+    color:var(--font-color);;
     border-radius: 10px;
     font-size: 1.1em;
     padding: 10px;
@@ -255,12 +311,12 @@ dialog input:focus{
 }
 
 dialog button{
-    background-color: oklch(44.4% 0.011 73.639);
+    background-color: var(--dialog-button-color);
     font-size: 1.1em;
     padding: 10px 20px;
     border-radius: 10px;
     border: 0px;
-    color: white;
+    color: var(--font-color);;
 }
 
 dialog div{
@@ -282,7 +338,7 @@ dialog div button{
 dialog span{
     margin-bottom: 20px;
     font-size: 2em;
-    color: aliceblue;
+    color: var(--font-color);;
 }
 
 .winner{
@@ -297,6 +353,6 @@ dialog span{
 
 .cover-dialog p{
     font-size: 2em;
-    color: aliceblue;
+    color: var(--font-color);;
     text-align: center;
 }

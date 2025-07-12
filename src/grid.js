@@ -7,7 +7,6 @@ import {
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
 const pauseButtonImage = './pause-svgrepo-com.svg'
-const closeButtonImage = "./close-circle-svgrepo-com.svg"
 
 
 const parent = document.createElement('div')
@@ -32,6 +31,7 @@ export function ComputerField(user,opponent){
         const userGrid = generateGridBoard(user.userName,(cell)=>{})
         addShipsToUserGrid(userGrid,user)
         const span = document.createElement('span')
+        span.classList.add('username-span')
         span.textContent = user.userName
         container.appendChild(userGrid)
         container.appendChild(span)
@@ -44,6 +44,7 @@ export function ComputerField(user,opponent){
         opponentGridContainer.classList.add('main-grid-container')
         const opponentGrid = generateGridBoard(opponent.userName,onOppenentCellClick)
         const span = document.createElement('span')
+        span.classList.add('username-span')
         span.textContent = opponent.userName
         opponentGridContainer.appendChild(opponentGrid)
         opponentGridContainer.appendChild(span)
@@ -160,6 +161,7 @@ export function TwoPlayerField(user,opponent){
             container.classList.add('main-grid-container')
             const userGrid = generateGridBoard(player.userName,onCellClick)
             const span = document.createElement('span')
+            span.classList.add('username-span')
             span.textContent = player.userName
             container.appendChild(userGrid)
             container.appendChild(span)
@@ -418,24 +420,29 @@ function GameField(userGridContainer,opponentGridContainer,restart){
     const createField = ()=>{
         
         const container = document.createElement('div');
+        container.classList.add('pause-button-container')
         container.classList.add('game-field')
         container.appendChild(userGridContainer);
-        container.appendChild(getPauseButton())
+        container.appendChild(getPauseButtonContainer())
         container.appendChild(opponentGridContainer);
     
         return container
     }
-    const getPauseButton = ()=>{
+
+    const getPauseButtonContainer = ()=>{
+        const container = document.createElement('div');
         const pauseButton = document.createElement('button');
         pauseButton.classList.add('pause-button')
         const img = document.createElement('img');
         img.src = pauseButtonImage
         pauseButton.appendChild(img)
         pauseButton.addEventListener('click',addDialog)
+        container.appendChild(pauseButton)
 
-        return pauseButton
+        return container
 
     }
+
     const display = ()=>{
         gameFieldParent.appendChild(create())
     }
