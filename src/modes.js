@@ -54,9 +54,11 @@ function onTwoPlayer(playerOneName,playerTwoName){
 function inputUserNameDialog(numberOfInputs){
     let inputArray = []
     const dialog = document.createElement('dialog')
+    dialog.classList.add('username-input-div')
     for(let i=1 ;i<=numberOfInputs;i++){
         let input = document.createElement('input')
         input.type = 'text'
+        input.placeholder = `player-${i}`
         inputArray.push(input)
         dialog.appendChild(input)
     }
