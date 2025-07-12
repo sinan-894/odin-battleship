@@ -23,6 +23,7 @@ document.body.appendChild(gameFieldParent)
 
 export function ComputerField(user,opponent){
     let Start = false
+    let delayTime = 500
     const {isGameOver} = GameOver(user,opponent)
 
     const createUserGridContainer = ()=>{
@@ -55,12 +56,14 @@ export function ComputerField(user,opponent){
 
 
     const onOppenentCellClick = async (cell)=>{
-        const attackResult = attack(cell,opponent)
-        if(user.isPlayersTurn() && !isGameOver() && attackResult){
+        
+        if(user.isPlayersTurn() && !isGameOver()){
+            const attackResult = attack(cell,opponent)
+            if(!attackResult) return
             //need to freeze the board until promise is resolved
             user.giveTurn(false)
             if(isGameOver()) return
-            await delay(500)//wait attack result
+            await delay(delayTime)//wait attack result
             if(Start){
                 if(attackResult=='H'){
                     switchTurn(user,opponent)
@@ -68,14 +71,14 @@ export function ComputerField(user,opponent){
                 }
                 else switchTurn(opponent,user)
             }
-            await delay(500)//wait for opp switch turn result
+            await delay(delayTime)//wait for opp switch turn result
             if(Start){
                 while(computerAttack()=='H' && !isGameOver()){
-                    await delay(500)
+                    await delay(delayTime)
                     switchTurn(opponent,user)
                 }
             }
-            await delay(500)//wait for computer attack
+            await delay(delayTime)//wait for computer attack
             if(Start) switchTurn(user,opponent)
             if(isGameOver()) return
             
@@ -152,7 +155,7 @@ export function ComputerField(user,opponent){
 export function TwoPlayerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
-    const delayTime = 0
+    const delayTime = 500
 
     const createPlayerGridContainer = (player,onCellClick)=>{
 
