@@ -342,7 +342,6 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
             
             
         }
-        console.log(user.userName,user.board.getState())
         parent.innerHTML = ""
         afterSave()
     } 
