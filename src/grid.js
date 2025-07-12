@@ -283,8 +283,11 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
     const getChangeDirectionButton = ()=>{
         const button = document.createElement('button');
         button.classList.add('change-direction-button');
-        button.textContent = 'change direction'
-        button.addEventListener('click',placeShipHandler.changeDirection)
+        button.textContent = 'Horizontal'
+        button.addEventListener('click',()=>{
+            placeShipHandler.changeDirection()
+            button.textContent = (button.textContent=='Horizontal')?'Vertical':'Horizontal'
+        })
         return button
     }
 
@@ -305,7 +308,6 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
         return button
     }
     
-
     const getRandomPlaceButtonForUser = ()=>{
         const randomlyPlaceButton = document.createElement('button')
         randomlyPlaceButton.textContent = 'random'
