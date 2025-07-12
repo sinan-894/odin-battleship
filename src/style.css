@@ -3,19 +3,24 @@ body{
     --top-pos-selector:0px;
     --test-border:0px solid black;
     --div-bg-color:black;
-    --main-bg-color:#1e40af;
+    --main-bg-color:#44403c;
     --font-color:aliceblue;
     --dialog-button-color:oklch(44.4% 0.011 73.639);
     --dialog-input-bg-color:#1c1c1c;
     --dialog-bg-color:#171717;
     --cell-bg-color:#38bdf8;
-    --place-ship-page-button-color:#0284c7;
+    --place-ship-page-button-color:#14532d;
     background-color: var(--main-bg-color);
     
 }
 
+.heading{
+    font-size: 5em;
+}
+
 .top-div{
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--main-bg-color);
@@ -35,7 +40,7 @@ body{
 
 /* select mode */
 .mode-selector-div{
-    margin-top: 100px;
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;

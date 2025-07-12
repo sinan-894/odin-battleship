@@ -20,11 +20,19 @@ export function selectModeInterface(){
     container.appendChild(computer)
     container.appendChild(twoPlayer)
 
+    parent.appendChild(heading())
     parent.appendChild(container)
 
     return parent
     
 
+}
+
+function heading(){
+    const heading = document.createElement('h1');
+    heading.classList.add('heading')
+    heading.textContent = "BATTLESHIP"
+    return heading 
 }
 
 function onComputer(playerOne){
