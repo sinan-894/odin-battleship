@@ -215,19 +215,88 @@ body{
     font-size: 1.5em;
 }
 
-.username-input-div{
+/* .username-input-div{
     display: flex;
     flex-direction: column;
     align-items: center;
+} */
 
-}
 
 .username-input-div input{
     margin-bottom: 20px;
 }
 
 
+/* dialog */
+
+
 dialog{
     border-radius: 20px;
+    background-color: #171717;
+    border: 0px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+}
+
+dialog input{
+    background-color: #1c1c1c;
+    color:aliceblue;
+    border-radius: 10px;
+    font-size: 1.1em;
+    padding: 10px;
+    border: 0px;
+}
+
+dialog input:focus{
+    border: 0px;
+}
+
+dialog button{
+    background-color: oklch(44.4% 0.011 73.639);
+    font-size: 1.1em;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 0px;
+    color: white;
+}
+
+dialog div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+dialog div button{
+    margin-bottom: 20px;
+    width: 100%;
+
+}
+
+.resume-button{
+    margin-bottom: 0px;
+}
+
+dialog span{
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: aliceblue;
+}
+
+.winner{
+    color: #84cc16;
+}
+
+.cover-dialog{
+    width: 90vw;
+    height: 90vh;
+    justify-content: center;
+}
+
+.cover-dialog p{
+    font-size: 2em;
+    color: aliceblue;
+    text-align: center;
 }

@@ -6,8 +6,8 @@ import {
     removeBackgrounds,switchTurn,getSelectorsContainer,
     genrateRandomNumber,generateGridBoard,getIdfromCordinates,GameOver
 } from "./functions.js"
-// import pauseButtonImage from './pause-svgrepo-com.svg'
-
+const pauseButtonImage = './pause-svgrepo-com.svg'
+const closeButtonImage = "./close-circle-svgrepo-com.svg"
 
 
 const parent = document.createElement('div')
@@ -151,6 +151,7 @@ export function ComputerField(user,opponent){
 export function TwoPlayerField(user,opponent){
     let Start = false
     const {isGameOver} = GameOver(user,opponent)
+    const delayTime = 0
 
     const createPlayerGridContainer = (player,onCellClick)=>{
 
@@ -167,17 +168,6 @@ export function TwoPlayerField(user,opponent){
 
     }
 
-    const onStart = ()=>{
-        if(!Start){
-            
-        }
-        else{
-            displayMessage('')
-            Start = false
-            placeShipSequence(document.body)
-        }
-        
-    }
 
     const onOppenentCellClick =  (cell)=>{
         if(user.isPlayersTurn() && !isGameOver()){
@@ -185,8 +175,8 @@ export function TwoPlayerField(user,opponent){
             if(!attackResult) return
             if (!isGameOver()){
                 user.giveTurn(false)
-                if(attackResult=='H') delay(1000).then(()=>switchTurn(user,opponent))
-                else delay(1000).then(()=>switchTurn(opponent,user))
+                if(attackResult=='H') delay(delayTime).then(()=>switchTurn(user,opponent))
+                else delay(delayTime).then(()=>switchTurn(opponent,user))
             }
         }
     }
@@ -200,8 +190,8 @@ export function TwoPlayerField(user,opponent){
             if (!isGameOver()){
                 opponent.giveTurn(false)
                 console.log(attackResult)
-                if(attackResult=='H') delay(1000).then(()=>switchTurn(opponent,user))
-                else delay(1000).then(()=>switchTurn(user,opponent))
+                if(attackResult=='H') delay(delayTime).then(()=>switchTurn(opponent,user))
+                else delay(delayTime).then(()=>switchTurn(user,opponent))
             }
         }
     }
@@ -264,6 +254,7 @@ export function TwoPlayerField(user,opponent){
 function PlaceShipGrid(user,afterSave = ()=>{}){
 
     let isPlacedRandomly = false
+    
 
     const createInterface=()=>{
         const container = document.createElement('div')
@@ -402,7 +393,7 @@ function PlaceShipGrid(user,afterSave = ()=>{}){
 
 function GameField(userGridContainer,opponentGridContainer,restart){
 
-    const dialog = document.createElement('dialog')
+    
     
     
     const create = ()=>{
@@ -418,8 +409,8 @@ function GameField(userGridContainer,opponentGridContainer,restart){
 
         container.appendChild(header)
         container.appendChild(createField())
-        document.body.appendChild(dialog)
-        addButtonsToDialog()
+        // document.body.appendChild(dialog)
+        // addButtonsToDialog()
 
         return container
     }
@@ -438,9 +429,9 @@ function GameField(userGridContainer,opponentGridContainer,restart){
         const pauseButton = document.createElement('button');
         pauseButton.classList.add('pause-button')
         const img = document.createElement('img');
-        img.src = './pause-svgrepo-com.svg'
+        img.src = pauseButtonImage
         pauseButton.appendChild(img)
-        pauseButton.addEventListener('click',()=>dialog.showModal())
+        pauseButton.addEventListener('click',addDialog)
 
         return pauseButton
 
@@ -449,36 +440,38 @@ function GameField(userGridContainer,opponentGridContainer,restart){
         gameFieldParent.appendChild(create())
     }
 
-    const addButtonsToDialog = ()=>{
-        dialog.appendChild(getButton('newgame',onNewGame))
-        dialog.appendChild(getButton('restart',onRestart))
-        dialog.appendChild(getButton('close',onClose))
+    const addDialog = ()=>{
+        const dialog = document.createElement('dialog');
+        document.body.appendChild(dialog)
+        dialog.showModal()
+        const div  = document.createElement('div');
+        div.appendChild(getButton('New Game','newgame',()=>{
+            dialog.close()
+            document.body.removeChild(dialog)
+            startNewGame()
+        }))
+        div.appendChild(getButton('Restart','restart',()=>{
+            dialog.close()
+            document.body.removeChild(dialog)
+            restart()
+        }))
+        div.appendChild(getButton('Resume','resume',()=>{
+            dialog.close()
+            document.body.removeChild(dialog)
+        }))
+
+        dialog.appendChild(div)
     }
 
-    const getButton = (name,onPress)=>{
+    const getButton = (text,name,onPress)=>{
         const button = document.createElement('button')
-        button.textContent = name
+        button.textContent = text
         button.classList.add(`${name}-button`)
         button.addEventListener('click',onPress)
         return button
     }
+    
 
-    const onClose = ()=>{
-        dialog.close()
-        // document.body.removeChild(dialog
-    }
-    const onNewGame = ()=>{
-        dialog.close()
-        document.body.removeChild(dialog)
-        startNewGame()
-        
-
-    }
-    const onRestart = ()=>{
-        dialog.close()
-        document.body.removeChild(dialog)
-        restart()
-    }
 
     return {create,display}
     

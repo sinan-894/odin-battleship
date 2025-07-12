@@ -5,12 +5,12 @@ export function GameOver(user,opponent){
     const isGameOver = ()=>{
         (user.board.isLost(),opponent.board.isLost(),'is Lost')
         if(user.board.isLost()){
-            displayMessage(`Game Over,${opponent.userName} won the match`)
+            displayMessage(`${opponent.userName} won!!!`)
             displayDialog(opponent.userName)
             return true
         }
         else if(opponent.board.isLost()){
-            displayMessage(`Game Over,${user.userName} won the match`)
+            displayMessage(`${user.userName} won!!!`)
             displayDialog(user.userName)
             return true
         }
@@ -22,7 +22,8 @@ export function GameOver(user,opponent){
     const displayDialog = (name)=>{
         const dialog = document.createElement('dialog')
         const winnerAnnouncer = document.createElement('span')
-        winnerAnnouncer.textContent = `${name} is the winnner`
+        winnerAnnouncer.textContent = `${name} WON!!!`
+        winnerAnnouncer.classList.add('winner')
         const button = document.createElement('button')
         button.textContent = 'New Game'
         dialog.appendChild(winnerAnnouncer)
